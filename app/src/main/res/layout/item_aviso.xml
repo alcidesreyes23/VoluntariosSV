@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardUseCompatPadding="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/img_landscape"
+                    android:scaleType="centerCrop"
+                    />
+
+                <TextView
+                    android:id="@+id/institucion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Centro Escolar Daniel Hernandez"
+                    android:layout_marginLeft="16dp"
+                    android:layout_above="@id/rubro"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/rubro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="Escuela"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/white"
+                    />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:padding="16dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/fecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Publicado el 9/5/2021"
+                    android:textSize="12sp"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#ccc"
+                    />
+
+                <TextView
+                    android:id="@+id/descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Institucion escolar busca programador para dar clases de programacion obviamente ni modo que a barrer"
+                    />
+                <TextView
+                    android:id="@+id/vacantes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3 vacantes"
+                    android:textColor="@color/color_warning"
+                    android:layout_marginTop="6dp"
+                    android:textAlignment="textEnd"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

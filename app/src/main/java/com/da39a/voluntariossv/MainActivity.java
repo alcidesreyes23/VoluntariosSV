@@ -12,8 +12,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.da39a.voluntariossv.firebase.Realtimedb;
+import com.da39a.voluntariossv.firelisteners.Checklogin;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
-TextView txvTitulo;
+
+    TextView txvTitulo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -27,17 +34,28 @@ TextView txvTitulo;
 
         //Animacion de Titulo
         Animation mov = AnimationUtils.loadAnimation(this,R.anim.movimiento);
+
         txvTitulo =  findViewById(R.id.txvTitulo);
         txvTitulo.setAnimation(mov);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this,Home.class);
-                startActivity(intent);
-
+                CheckAuth();
             }
         },4000);
 
     }
+
+    public void CheckAuth(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user == null){
+            startActivity(new Intent(this,Login.class));
+        }else{
+            new Realtimedb().getUsuario(user.getUid()).addListenerForSingleValueEvent(new Checklogin(this));
+        }
+    }
+
+
+
 }

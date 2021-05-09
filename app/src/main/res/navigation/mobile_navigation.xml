@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_buscar">
+
+    <fragment
+        android:id="@+id/navigation_buscar"
+        android:name="com.da39a.voluntariossv.ui.buscar.BuscarFragment"
+        android:label="Buscar"
+        tools:layout="@layout/fragment_buscar" />
+
+    <fragment
+        android:id="@+id/navigation_avisos"
+        android:name="com.da39a.voluntariossv.ui.avisos.AvisosFragment"
+        android:label="Avisos"
+        tools:layout="@layout/fragment_avisos" />
+
+    <fragment
+        android:id="@+id/navigation_notificaciones"
+        android:name="com.da39a.voluntariossv.ui.notificaciones.NotificacionesFragment"
+        android:label="Notificaciones"
+        tools:layout="@layout/fragment_notificationes" />
+
+    <fragment
+        android:id="@+id/navigation_configuraciones"
+        android:name="com.da39a.voluntariossv.ui.configuraciones.ConfiguracionesFragment"
+        android:label="Configuraciones"
+        tools:layout="@layout/fragment_configuraciones" />
+
+
+</navigation>

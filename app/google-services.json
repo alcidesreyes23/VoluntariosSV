@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "33936569382",
+    "firebase_url": "https://voluntariossv-e130e-default-rtdb.firebaseio.com",
+    "project_id": "voluntariossv-e130e",
+    "storage_bucket": "voluntariossv-e130e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33936569382:android:6581da87b98d46610be2e7",
+        "android_client_info": {
+          "package_name": "com.da39a.voluntariossv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33936569382-f2s4suee21b77urhtbr5ghvj604lhito.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe2IQUdpsivUr-J2-EbwXeWtNqK0bf4nM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33936569382-f2s4suee21b77urhtbr5ghvj604lhito.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
