@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">VoluntariosSV</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_activity_registro_des">Tipo de cuenta</string>
+    <string name="title_activity_registro_ins">Registro de institución</string>
+    <string name="title_activity_registro_vo">Registro de voluntario</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -21,4 +24,12 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string-array name="rubros">
+        <item>Seleccione el rubro</item>
+        <item>Educación</item>
+        <item>Turismo</item>
+        <item>Software</item>
+        <item>Salud</item>
+    </string-array>
 </resources>

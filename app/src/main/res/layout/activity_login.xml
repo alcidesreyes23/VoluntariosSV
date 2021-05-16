@@ -57,6 +57,23 @@
                 android:inputType="textPassword"
                 />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="¿No tienes cuenta?" />
+
+            <Button
+                android:id="@+id/btnRegistrar"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClick"
+                android:text="@string/crear_cuenta"
+                android:textColor="#000F91"
+                android:textSize="18sp" />
+
 
         </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.da39a.voluntariossv.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.da39a.voluntariossv.R;
+import com.da39a.voluntariossv.firebase.Realtimedb;
+import com.da39a.voluntariossv.firelisteners.Checklogin;
 
 public class CustomAlerts{
 
@@ -17,6 +20,8 @@ public class CustomAlerts{
     private String title;
     private String message;
     private MODALTYPE type;
+    private String uid;
+    private  boolean estado;
     Context ctx;
 
     public CustomAlerts(Context c){
@@ -34,6 +39,10 @@ public class CustomAlerts{
     public void setType(MODALTYPE type) {
         this.type = type;
     }
+
+    public void setUid(String uid) { this.uid = uid; }
+
+    public void setEstado(boolean estado) { this.estado = estado; }
 
     public void show(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this.ctx);
@@ -76,9 +85,15 @@ public class CustomAlerts{
             modal_message.setText(this.message);
         }
 
+        if (estado){
+            builder.setPositiveButton("Ok", (dialog, which) -> {
+                new Realtimedb().getUsuario(uid).addListenerForSingleValueEvent(new Checklogin(ctx));
+            });
+        } else {
+            builder.setPositiveButton("Ok",null);
+        }
         builder.setView(v);
         builder.setCancelable(true);
-        builder.setPositiveButton("Ok",null);
         builder.create().show();
 
     }

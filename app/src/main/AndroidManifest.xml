@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.da39a.voluntariossv">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,12 +14,36 @@
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
         <activity
+            android:name=".RegistroInstitucion"
+            android:label="@string/title_activity_registro_ins"
+            android:parentActivityName=".DecisionRegistro">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DecisionRegistro"/>
+        </activity>
+        <activity
+            android:name=".RegistroVoluntario"
+            android:label="@string/title_activity_registro_vo"
+            android:parentActivityName=".DecisionRegistro">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DecisionRegistro"/>
+        </activity>
+        <activity
+            android:name=".DecisionRegistro"
+            android:label="@string/title_activity_registro_des"
+            android:parentActivityName=".Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Login"/>
+        </activity>
+        <activity
             android:name=".Home"
-            android:label="@string/title_activity_home"></activity>
+            android:label="@string/title_activity_home" />
         <activity
             android:name=".Login"
-            android:theme="@style/MyAppTheme.NoActionBar"
-            android:label="@string/title_activity_login"/>
+            android:label="@string/title_activity_login"
+            android:theme="@style/MyAppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

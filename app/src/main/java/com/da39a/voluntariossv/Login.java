@@ -1,38 +1,33 @@
 package com.da39a.voluntariossv;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.firelisteners.Checklogin;
-import com.da39a.voluntariossv.modelos.Usuario;
 import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-public class Login extends AppCompatActivity implements OnFailureListener, OnSuccessListener<AuthResult>{
+public class Login extends AppCompatActivity implements OnFailureListener, OnSuccessListener<AuthResult>, View.OnClickListener {
 
     FloatingActionButton fab;
     EditText etCorreo,etContra;
     CustomAlerts alerts;
-
+    Button btnRegistrar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +42,7 @@ public class Login extends AppCompatActivity implements OnFailureListener, OnSuc
         fab = findViewById(R.id.fab);
         etCorreo = findViewById(R.id.correo);
         etContra = findViewById(R.id.contra);
+        btnRegistrar = findViewById(R.id.btnRegistrar);
 
         alerts = new CustomAlerts(this);
     }
@@ -61,14 +57,14 @@ public class Login extends AppCompatActivity implements OnFailureListener, OnSuc
             alerts.setMensage("Debes llenar el campo de correo electronico");
             alerts.show();
             return;
-        };
+        }
         if(contra == null || contra.isEmpty()) {
             alerts.setType(CustomAlerts.MODALTYPE.WARNING);
             alerts.setTitle("Campo vacio");
             alerts.setMensage("Debes llenar el campo de contraseña");
             alerts.show();
             return;
-        };
+        }
 
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(correo,contra)
@@ -99,7 +95,9 @@ public class Login extends AppCompatActivity implements OnFailureListener, OnSuc
         new Realtimedb().getUsuario(uid).addListenerForSingleValueEvent(new Checklogin(this));
     }
 
-
-
-
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(Login.this,DecisionRegistro.class);
+        startActivity(intent);
+    }
 }
