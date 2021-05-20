@@ -22,10 +22,12 @@ public class CustomAlerts{
     private MODALTYPE type;
     private String uid;
     private  boolean estado;
+    private DialogInterface.OnClickListener positive;
     Context ctx;
 
     public CustomAlerts(Context c){
         this.ctx = c;
+        positive = null;
     }
 
     public void setTitle(String title) {
@@ -43,6 +45,10 @@ public class CustomAlerts{
     public void setUid(String uid) { this.uid = uid; }
 
     public void setEstado(boolean estado) { this.estado = estado; }
+
+    public void setPositive(DialogInterface.OnClickListener action){
+        this.positive = action;
+    }
 
     public void show(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this.ctx);
@@ -90,7 +96,7 @@ public class CustomAlerts{
                 new Realtimedb().getUsuario(uid).addListenerForSingleValueEvent(new Checklogin(ctx));
             });
         } else {
-            builder.setPositiveButton("Ok",null);
+            builder.setPositiveButton("Ok",positive);
         }
         builder.setView(v);
         builder.setCancelable(true);

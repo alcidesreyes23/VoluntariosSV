@@ -8,10 +8,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="text_primary">#222</color>
+    <color name="text_secondary">#757575</color>
+
     <color name="color_success">#388E3C</color>
     <color name="color_danger">#D32F2F</color>
     <color name="color_warning">#FFA000</color>
     <color name="color_info">#0288D1</color>
     <color name="color_question">#0097A7</color>
+
+    <color name="color_deep_orange">#E64A19</color>
+
+    <color name="color_flag_disabled">#c2185c</color>
 
 </resources>

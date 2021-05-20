@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -143,22 +144,23 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
 
     //Metodo para limpiar el formulario
     public void limpiar(View v){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Cancelar Registro");
-        dialog.setMessage("¿ Desea cancelar el registro ?");
-        dialog.setCancelable(false);
-        dialog.setPositiveButton("Aceptar",  (dialogo1, id) -> {
-            edtCorreo.setText("");
-            edtContra.setText("");
-            edtConfContra.setText("");
-            edtDireccion.setText("");
-            edtNombre.setText("");
-            iRubro.setSelection(0);
-            edtDescripcion.setText("");
-            startActivity(new Intent(RegistroInstitucion.this,DecisionRegistro.class));
+        alerts.setType(CustomAlerts.MODALTYPE.WARNING);
+        alerts.setTitle("Cancelar Registro");
+        alerts.setMensage("¿ Desea cancelar el registro ?");
+        alerts.setPositive(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                /*edtCorreo.setText("");
+                edtContra.setText("");
+                edtConfContra.setText("");
+                edtDireccion.setText("");
+                edtNombre.setText("");
+                iRubro.setSelection(0);
+                edtDescripcion.setText("");*/
+                startActivity(new Intent(RegistroInstitucion.this,DecisionRegistro.class));
+            }
         });
-        dialog.setNegativeButton("Cancelar",null);
-        dialog.show();
+        alerts.show();
     }
 
     //Inicio metodos para cargar el mapa y obtener su posicion

@@ -20,6 +20,7 @@ public class Aviso {
     private String institucionFK;
     private Institucion institucion;
     private List<Voluntario> aplicantes;
+    private String extra;
 
     public Aviso(){
 
@@ -32,7 +33,6 @@ public class Aviso {
         this.setFecha(d.child("fecha").getValue(Long.class));
         this.setVacantes(d.child("vacantes").getValue(Integer.class));
         this.setInstitucionFK(d.child("institucion").getValue().toString());
-
     }
 
     public String getId() {
@@ -97,5 +97,13 @@ public class Aviso {
 
     public void setInstitucionFK(String institucionFK) {
         this.institucionFK = institucionFK;
+    }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 }

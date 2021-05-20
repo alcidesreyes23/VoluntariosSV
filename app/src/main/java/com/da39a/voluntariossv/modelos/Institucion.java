@@ -8,7 +8,9 @@ public class Institucion {
     private String nombre;
     private String descripcion;
     private String rubro;
-    private Localizacion localizacion;
+    private String telefono;
+    private double latitud;
+    private double longitud;
 
     public Institucion(){
 
@@ -19,7 +21,9 @@ public class Institucion {
         this.setNombre(d.child("nombre").getValue().toString());
         this.setDescripcion(d.child("descripcion").getValue().toString());
         this.setRubro(d.child("rubro").getValue().toString());
-        this.setLocalizacion(new Localizacion());
+        this.setTelefono(d.child("telefono").getValue().toString());
+        this.setLatitud(d.child("localizacion").child("latitud").getValue(Double.class));
+        this.setLongitud(d.child("localizacion").child("longitud").getValue(Double.class));
     }
 
     public String getId() {
@@ -54,11 +58,27 @@ public class Institucion {
         this.rubro = rubro;
     }
 
-    public Localizacion getLocalizacion() {
-        return localizacion;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setLocalizacion(Localizacion localizacion) {
-        this.localizacion = localizacion;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 }

@@ -1,6 +1,8 @@
 package com.da39a.voluntariossv.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.da39a.voluntariossv.R;
 import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.modelos.Aviso;
 import com.da39a.voluntariossv.modelos.Institucion;
+import com.da39a.voluntariossv.utils.Conversiones;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,18 +27,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder> implements ValueEventListener {
+public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder>{
 
     Context ctx;
     List<Aviso> data,temp;
-    DatabaseReference ref;
 
-    public Rcv_Busqueda(Context ctx) {
+    public Rcv_Busqueda(Context ctx, List<Aviso> avisos) {
         this.ctx = ctx;
-        this.data = new ArrayList<>();
-        this.temp = new ArrayList<>();
-        this.ref = new Realtimedb().getAvisos();
-        this.ref.addListenerForSingleValueEvent(this);
+        this.data = avisos;
+        //this.temp = new ArrayList<>();
     }
 
     @NonNull
@@ -56,34 +57,6 @@ public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder> imp
 
 
 
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-        if(dataSnapshot.getKey().equals("avisos")){
-            temp.clear();
-            for (DataSnapshot d: dataSnapshot.getChildren()) {
-                temp.add(new Aviso(d));
-            }
-            new Realtimedb().getInstituciones().addListenerForSingleValueEvent(this);
-        }else{
-            for (DataSnapshot d: dataSnapshot.getChildren()) {
-                for(Aviso av : temp){
-                    if(d.getKey().equals(av.getInstitucionFK())){
-                        av.setInstitucion(new Institucion(d));
-                    }
-                }
-            }
-            data.addAll(temp);
-            this.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-    }
-
-
     public class VHolder extends RecyclerView.ViewHolder{
         CardView card;
         TextView tvInstitucion,tvRubro,tvFecha,tvVacantes,tvDescripcion;
@@ -101,10 +74,27 @@ public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder> imp
         public void setUI(Aviso avi){
             tvInstitucion.setText(avi.getInstitucion().getNombre());
             tvRubro.setText(avi.getInstitucion().getRubro());
-            tvDescripcion.setText(avi.getDescripcion());
-            tvVacantes.setText(avi.getVacantes() + " vacantes");
-            tvFecha.setText(avi.getFecha()+"");
+            tvDescripcion.setText(avi.getTitulo());
 
+            if(avi.getExtra() == null || avi.getExtra().isEmpty()){
+                tvVacantes.setText(avi.getVacantes() + " vacantes");
+            }else{
+                tvVacantes.setText(avi.getExtra());
+            }
+
+
+            tvFecha.setText(Conversiones.milisToDateString(avi.getFecha()));
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("avisoId",avi.getId());
+                    bundle.putString("institucionId",avi.getInstitucionFK());
+                    Intent intent = new Intent(ctx, com.da39a.voluntariossv.Aviso.class);
+                    intent.putExtra("parametros",bundle);
+                    ctx.startActivity(intent);
+                }
+            });
         }
 
     }

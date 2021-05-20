@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".Aviso">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/MyAppTheme.AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Doofersmitch"
+            app:toolbarId="@+id/toolbar">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_landscape"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/MyAppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/aviso_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Publicado: 17/05/2021"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                />
+
+            <TextView
+                android:id="@+id/aviso_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SE NECESESITA BURRO DE CARGA"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/color_info"
+                android:layout_marginBottom="16dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Detalles de la vacante:"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/aviso_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hola esta es la pinche descripcion de la vacante donde te decimos en que consiste las labores de burro que vas a realizar y que no te vamos a pagar ni mierda"
+                />
+
+            <TextView
+                android:id="@+id/aviso_vacantes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vacantes disponibles: 3 "
+                android:textStyle="bold"
+                android:textColor="@color/color_warning"
+                android:layout_marginTop="16dp"
+                />
+
+            <TextView
+                android:id="@+id/aviso_localizacion"
+                android:layout_marginTop="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rectangle_round"
+                android:drawableLeft="@drawable/ic_near_me"
+                android:text="Ver Localización"
+                android:textAlignment="center"
+                android:drawablePadding="8dp"
+                android:padding="16dp"
+                android:drawableTint="@color/color_info"
+                />
+
+            <TextView
+                android:id="@+id/aviso_telefono"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rectangle_round"
+                android:drawableLeft="@drawable/ic_phone"
+                android:text="Llamada telefonica"
+                android:textAlignment="center"
+                android:drawablePadding="8dp"
+                android:padding="16dp"
+                android:drawableTint="@color/color_success"
+                />
+
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        android:src="@drawable/ic_flag"
+        android:tint="#c2185c"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

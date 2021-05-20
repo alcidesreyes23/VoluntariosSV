@@ -14,12 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
         <activity
+            android:name=".Aviso"
+            android:label="@string/title_activity_aviso"
+            android:theme="@style/MyAppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
             android:name=".RegistroInstitucion"
             android:label="@string/title_activity_registro_ins"
             android:parentActivityName=".DecisionRegistro">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DecisionRegistro"/>
+                android:value=".DecisionRegistro" />
         </activity>
         <activity
             android:name=".RegistroVoluntario"
@@ -27,7 +35,7 @@
             android:parentActivityName=".DecisionRegistro">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DecisionRegistro"/>
+                android:value=".DecisionRegistro" />
         </activity>
         <activity
             android:name=".DecisionRegistro"
@@ -35,7 +43,7 @@
             android:parentActivityName=".Login">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Login"/>
+                android:value=".Login" />
         </activity>
         <activity
             android:name=".Home"
