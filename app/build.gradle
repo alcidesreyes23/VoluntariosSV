@@ -45,6 +45,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.maps.android:android-maps-utils:0.6.2'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    //Librerias para acceso al storage
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    //Libreria para mostrar imagenes con GLIDE
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    //Libreia para mostrar la imagen circular
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 
     testImplementation 'junit:junit:4.13.2'

@@ -3,11 +3,9 @@ package com.da39a.voluntariossv;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.da39a.voluntariossv.firebase.Realtimedb;
-import com.da39a.voluntariossv.firelisteners.Checklogin;
 import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -25,7 +22,6 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +54,7 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
         //Buttons
         btnCancel = findViewById(R.id.btnCancelar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
-        btnMap  = findViewById(R.id.btnMapa);
+        btnMap  = findViewById(R.id.btnCal);
         //Spinner
         iRubro = findViewById(R.id.rubro);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.rubros, android.R.layout.simple_spinner_item);

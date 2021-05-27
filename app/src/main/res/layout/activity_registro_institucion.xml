@@ -116,7 +116,7 @@
                     android:inputType="date" />
 
                 <ImageButton
-                    android:id="@+id/btnMapa"
+                    android:id="@+id/btnCal"
                     style="@android:style/Widget.DeviceDefault.ImageButton"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"

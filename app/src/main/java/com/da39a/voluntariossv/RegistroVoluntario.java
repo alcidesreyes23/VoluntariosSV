@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.da39a.voluntariossv.firebase.Realtimedb;
-import com.da39a.voluntariossv.firelisteners.Checklogin;
+import com.da39a.voluntariossv.utils.Constantes;
 import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,8 +29,10 @@ public class RegistroVoluntario extends AppCompatActivity implements  OnFailureL
     EditText edtCorreo, edtContra, edtConfContra, edtFecha, edtNombre,edtOcupacion;
     Button btnRegistrar, btnCancel;
     ImageButton btnCalendar;
+    RadioGroup sexo;
     CustomAlerts alerts;
     long fechaLong;
+    String genero;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +53,22 @@ public class RegistroVoluntario extends AppCompatActivity implements  OnFailureL
         //Buttons
         btnCancel = findViewById(R.id.btnCancelar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
-        btnCalendar  = findViewById(R.id.btnMapa);
+        btnCalendar  = findViewById(R.id.btnCal);
+        //RadioButton
+        sexo = findViewById(R.id.rdgSexo);
 
         alerts =  new CustomAlerts(this);
     }
 
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        int id = view.getId();
+        if (id == R.id.radio_m) {
+            if (checked) genero = "Masculino";
+        } else if (id == R.id.radio_f){
+            if (checked) genero = "Femenino";
+        }
+    }
     public void  Checklogin(View v){
         boolean estado = true;
         String correo = edtCorreo.getText().toString();
@@ -85,6 +100,9 @@ public class RegistroVoluntario extends AppCompatActivity implements  OnFailureL
                 dataVoluntarios.put("nacimiento",fechaLong);
                 dataVoluntarios.put("nombre",nombre);
                 dataVoluntarios.put("ocupacion",ocupacion);
+                dataVoluntarios.put("sexo",genero);
+                if (genero.equals("Masculino"))  dataVoluntarios.put("fotoPerfil", Constantes.FOTO_POR_DEFECTO_M);
+                else  dataVoluntarios.put("fotoPerfil", Constantes.FOTO_POR_DEFECTO_F);
 
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo,contra).addOnSuccessListener(authResult -> {
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();

@@ -125,7 +125,7 @@
                     android:inputType="date" />
 
                 <ImageButton
-                    android:id="@+id/btnMapa"
+                    android:id="@+id/btnCal"
                     style="@android:style/Widget.DeviceDefault.ImageButton"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
@@ -151,6 +151,39 @@
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Sexo" />
+
+            <RadioGroup
+                android:id="@+id/rdgSexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_m"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Masculino" />
+
+                <RadioButton
+                    android:id="@+id/radio_f"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Femenino" />
+            </RadioGroup>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
