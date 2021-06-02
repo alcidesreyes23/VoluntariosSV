@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_drawer"
+    app:startDestination="@+id/nav_mis_avisos">
+
+    <fragment
+        android:id="@+id/nav_mis_avisos"
+        android:name="com.da39a.voluntariossv.ui.mis_avisos.MisAvisosFragment"
+        android:label="Mis Avisos"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_publicar_aviso"
+        android:name="com.da39a.voluntariossv.ui.publicar_aviso.PublicarAvisoFragment"
+        android:label="Publicar Aviso"
+        tools:layout="@layout/fragment_publicar_aviso" />
+
+    <fragment
+        android:id="@+id/nav_mi_institucion"
+        android:name="com.da39a.voluntariossv.ui.mi_institucion.MiInstitucionFragment"
+        android:label="Mi Institucion"
+        tools:layout="@layout/fragment_mi_institucion" />
+
+
+
+
+</navigation>

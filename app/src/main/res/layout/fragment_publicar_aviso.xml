@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.publicar_aviso.PublicarAvisoFragment">
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Aviso"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:drawableLeft="@drawable/ic_publicar"
+            android:drawablePadding="8dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Titulo de el aviso:"
+            />
+        <EditText
+            android:id="@+id/et_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!---->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Vacantes disponibles:"
+            />
+        <EditText
+            android:id="@+id/et_vacantes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            />
+
+
+
+        <!---->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Rango de edad:"
+            />
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/et_seek_min"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Minima: "
+                />
+
+            <SeekBar
+                android:id="@+id/seek_edadmin"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:min="15"
+                android:max="99"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/et_seek_max"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Maxima: "
+                />
+
+            <SeekBar
+                android:id="@+id/seek_edadmax"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:min="15"
+                android:max="99"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <!---->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Fecha Expiración:"
+            />
+        <EditText
+            android:id="@+id/et_fechaexp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:hint="dd/MM/yyyy"
+            android:focusable="false"
+            />
+
+        <!---->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Descripción detallada:"
+            />
+        <EditText
+            android:id="@+id/et_descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+
+        <Button
+            android:id="@+id/btn_publicar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Publicar"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/color_success"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

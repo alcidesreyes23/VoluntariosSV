@@ -30,12 +30,11 @@ import java.util.List;
 public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder>{
 
     Context ctx;
-    List<Aviso> data,temp;
+    List<Aviso> data;
 
     public Rcv_Busqueda(Context ctx, List<Aviso> avisos) {
         this.ctx = ctx;
         this.data = avisos;
-        //this.temp = new ArrayList<>();
     }
 
     @NonNull
@@ -54,8 +53,6 @@ public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder>{
     public int getItemCount() {
         return data.size();
     }
-
-
 
     public class VHolder extends RecyclerView.ViewHolder{
         CardView card;

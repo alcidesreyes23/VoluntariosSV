@@ -26,9 +26,8 @@ import java.util.Map;
 
 public class RegistroVoluntario extends AppCompatActivity implements  OnFailureListener {
 
-    EditText edtCorreo, edtContra, edtConfContra, edtFecha, edtNombre,edtOcupacion;
+    EditText edtCorreo, edtContra, edtConfContra, edtFecha, edtNombre,edtOcupacion,edtTelefono;
     Button btnRegistrar, btnCancel;
-    ImageButton btnCalendar;
     RadioGroup sexo;
     CustomAlerts alerts;
     long fechaLong;
@@ -50,10 +49,10 @@ public class RegistroVoluntario extends AppCompatActivity implements  OnFailureL
         edtFecha = findViewById(R.id.direccion);
         edtNombre = findViewById(R.id.nombre);
         edtOcupacion = findViewById(R.id.ocupacion);
+        edtTelefono = findViewById(R.id.telefono);
         //Buttons
         btnCancel = findViewById(R.id.btnCancelar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
-        btnCalendar  = findViewById(R.id.btnCal);
         //RadioButton
         sexo = findViewById(R.id.rdgSexo);
 
@@ -77,8 +76,9 @@ public class RegistroVoluntario extends AppCompatActivity implements  OnFailureL
         String fecha =  edtFecha.getText().toString();
         String nombre = edtNombre.getText().toString();
         String ocupacion = edtOcupacion.getText().toString();
+        String telefono = edtTelefono.getText().toString();
 
-        String[] datos = {correo,contra,cfContra, fecha,nombre,ocupacion};
+        String[] datos = {correo,contra,cfContra, fecha,nombre,ocupacion, telefono};
         for (int i = 0; i < datos.length; i++) {
             if (datos[i] == null || datos[i].isEmpty()) {
                 alert(i);
@@ -101,8 +101,8 @@ public class RegistroVoluntario extends AppCompatActivity implements  OnFailureL
                 dataVoluntarios.put("nombre",nombre);
                 dataVoluntarios.put("ocupacion",ocupacion);
                 dataVoluntarios.put("sexo",genero);
-                if (genero.equals("Masculino"))  dataVoluntarios.put("fotoPerfil", Constantes.FOTO_POR_DEFECTO_M);
-                else  dataVoluntarios.put("fotoPerfil", Constantes.FOTO_POR_DEFECTO_F);
+                dataVoluntarios.put("telefono",telefono);
+                //dataVoluntarios.put("fotoPerfil",(genero.equals("Masculino") ? Constantes.FOTO_POR_DEFECTO_M : Constantes.FOTO_POR_DEFECTO_F));
 
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo,contra).addOnSuccessListener(authResult -> {
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -149,6 +149,7 @@ public class RegistroVoluntario extends AppCompatActivity implements  OnFailureL
             edtFecha.setText("");
             edtNombre.setText("");
             edtOcupacion.setText("");
+            edtTelefono.setText("");
             startActivity(new Intent(RegistroVoluntario.this,DecisionRegistro.class));
         });
         dialog.setNegativeButton("Cancelar",null);

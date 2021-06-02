@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Aviso {
@@ -16,10 +17,13 @@ public class Aviso {
     private String titulo;
     private String descripcion;
     private long fecha;
+    private long expiracion;
     private int vacantes;
+    private int edadmax;
+    private int edadmin;
     private String institucionFK;
     private Institucion institucion;
-    private List<Voluntario> aplicantes;
+    private List<String> aplicantes;
     private String extra;
 
     public Aviso(){
@@ -32,7 +36,16 @@ public class Aviso {
         this.setDescripcion(d.child("descripcion").getValue().toString());
         this.setFecha(d.child("fecha").getValue(Long.class));
         this.setVacantes(d.child("vacantes").getValue(Integer.class));
-        this.setInstitucionFK(d.child("institucion").getValue().toString());
+        this.setEdadmax(d.child("edadmax").getValue(Integer.class));
+        this.setEdadmin(d.child("edadmin").getValue(Integer.class));
+        this.setExpiracion(d.child("expiracion").getValue(Long.class));
+        this.setInstitucion(new Institucion(d.child("institucion").getChildren().iterator().next()));
+        this.setAplicantes(new ArrayList<>());
+        if(d.child("aplicantes").exists()){
+            for(DataSnapshot da : d.child("aplicantes").getChildren()){
+                this.getAplicantes().add(da.getKey());
+            }
+        }
     }
 
     public String getId() {
@@ -83,11 +96,15 @@ public class Aviso {
         this.institucion = institucion;
     }
 
-    public List<Voluntario> getAplicantes() {
+    public void setInstitucionFK(String institucionFK) {
+        this.institucionFK = institucionFK;
+    }
+
+    public List<String> getAplicantes() {
         return aplicantes;
     }
 
-    public void setAplicantes(List<Voluntario> aplicantes) {
+    public void setAplicantes(List<String> aplicantes) {
         this.aplicantes = aplicantes;
     }
 
@@ -95,9 +112,9 @@ public class Aviso {
         return institucionFK;
     }
 
-    public void setInstitucionFK(String institucionFK) {
+    /*public void setInstitucionFK(String institucionFK) {
         this.institucionFK = institucionFK;
-    }
+    }*/
 
     public String getExtra() {
         return extra;
@@ -105,5 +122,29 @@ public class Aviso {
 
     public void setExtra(String extra) {
         this.extra = extra;
+    }
+
+    public long getExpiracion() {
+        return expiracion;
+    }
+
+    public void setExpiracion(long expiracion) {
+        this.expiracion = expiracion;
+    }
+
+    public int getEdadmax() {
+        return edadmax;
+    }
+
+    public void setEdadmax(int edadmax) {
+        this.edadmax = edadmax;
+    }
+
+    public int getEdadmin() {
+        return edadmin;
+    }
+
+    public void setEdadmin(int edadmin) {
+        this.edadmin = edadmin;
     }
 }

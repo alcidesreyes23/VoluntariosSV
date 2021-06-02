@@ -15,6 +15,7 @@ public class Usuario {
 
     public Usuario(DataSnapshot ds){
         this.setId(ds.getKey());
+        Log.e("USERUID",ds.getKey());
         this.setTipo(ds.getValue().toString());
     }
 

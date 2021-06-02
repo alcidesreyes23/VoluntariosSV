@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.da39a.voluntariossv.firebase.Realtimedb;
+import com.da39a.voluntariossv.firelisteners.Checklogin;
 import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -29,12 +30,11 @@ import java.util.Map;
 public class RegistroInstitucion extends AppCompatActivity implements OnFailureListener {
 
     Spinner iRubro;
-    EditText edtCorreo, edtContra, edtConfContra, edtDireccion, edtDescripcion, edtNombre;
+    EditText edtCorreo, edtContra, edtConfContra, edtDireccion, edtDescripcion, edtNombre, edtTelefono;
     Button btnRegistrar, btnCancel;
     ImageButton btnMap;
     CustomAlerts alerts;
     String latitud, longitud;
-    static int PLACE_PICKER_REQUEST=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
         edtNombre = findViewById(R.id.nombre);
         edtDescripcion = findViewById(R.id.descripcion);
         edtDireccion = findViewById(R.id.direccion);
+        edtTelefono = findViewById(R.id.telefono);
         //Buttons
         btnCancel = findViewById(R.id.btnCancelar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
@@ -73,8 +74,9 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
         String nombre = edtNombre.getText().toString();
         String rubro = iRubro.getSelectedItem().toString();
         String desc = edtDescripcion.getText().toString();
+        String tel = edtTelefono.getText().toString();
 
-        String[] datos = {correo,contra,cfContra, direc,nombre,rubro,desc};
+        String[] datos = {correo,contra,cfContra, direc,nombre,rubro,desc,tel};
         for (int i = 0; i < datos.length; i++) {
             if (datos[i] == null || datos[i].isEmpty() || datos[i].equals("Seleccione el rubro")) {
                 alert(i);
@@ -97,10 +99,11 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
                 dataInstituciones.put("nombre",nombre);
                 dataInstituciones.put("rubro",rubro);
                 dataInstituciones.put("descripcion",desc);
+                dataInstituciones.put("telefono",tel);
 
                 Map<String,Object> dataDireccion = new HashMap<>();
-                dataDireccion.put("latitud",latitud);
-                dataDireccion.put("longitud",longitud);
+                dataDireccion.put("latitud",Double.parseDouble(latitud));
+                dataDireccion.put("longitud",Double.parseDouble(longitud));
 
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo,contra).addOnSuccessListener(authResult -> {
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -110,8 +113,12 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
                                          alerts.setType(CustomAlerts.MODALTYPE.SUCCESS);
                                          alerts.setTitle("¡Bienvenido a VoluntariosSV!");
                                          alerts.setMensage("Gracias por crear una cuenta con nosotros, esperamos su ayuda para construir un mejor El Salvador");
-                                         alerts.setEstado(true);
-                                         alerts.setUid(uid);
+                                         alerts.setPositive(new DialogInterface.OnClickListener() {
+                                             @Override
+                                             public void onClick(DialogInterface dialog, int which) {
+                                                 new Realtimedb().getUsuario(uid).addListenerForSingleValueEvent(new Checklogin(RegistroInstitucion.this));
+                                             }
+                                         });
                                          alerts.show();
                                     }).addOnFailureListener(this)
                              .addOnFailureListener(this))
@@ -146,13 +153,6 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
         alerts.setPositive(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /*edtCorreo.setText("");
-                edtContra.setText("");
-                edtConfContra.setText("");
-                edtDireccion.setText("");
-                edtNombre.setText("");
-                iRubro.setSelection(0);
-                edtDescripcion.setText("");*/
                 startActivity(new Intent(RegistroInstitucion.this,DecisionRegistro.class));
             }
         });
@@ -161,25 +161,14 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
 
     //Inicio metodos para cargar el mapa y obtener su posicion
     public  void map(View v) {
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        Intent intent;
-        try {
-            intent=builder.build(this);
-            startActivityForResult(intent,PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
+        startActivityForResult(new Intent(this, com.da39a.voluntariossv.PlacePicker.class),0);
     }
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(this,data);
-                String address=String.format("Direccion guardada %s",place.getAddress());
-                edtDireccion.setText(address);
-                latitud = String.valueOf(place.getLatLng().latitude);
-                longitud = String.valueOf(place.getLatLng().longitude);
-            }
+        if(data != null){
+            latitud = data.getExtras().getDouble("latitud") + "";
+            longitud = data.getExtras().getDouble("longitud") + "";
+            edtDireccion.setText(latitud.substring(0,9) + ", " + longitud.substring(0,9));
         }
     }
 

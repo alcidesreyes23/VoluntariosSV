@@ -22,22 +22,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Datos de cuenta"
-                android:textColor="@color/black"
+                android:textColor="@color/text_secondary"
                 android:textSize="20sp"
+                android:drawableLeft="@drawable/ic_account"
+                android:drawablePadding="8dp"
                 android:textStyle="bold" />
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:background="?android:attr/listDivider" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/correo"
@@ -53,8 +54,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
                 app:passwordToggleEnabled="true">
 
                 <EditText
@@ -69,8 +68,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -89,7 +86,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="Datos personales"
-                android:textColor="@color/black"
+                android:textColor="@color/text_secondary"
+                android:drawableLeft="@drawable/ic_user"
+                android:drawablePadding="8dp"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -97,7 +96,8 @@
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView
@@ -105,42 +105,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="15dp"
+                android:layout_marginTop="16dp"
                 android:text="Fecha de nacimiento" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/direccion"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/direccion"
-                    android:layout_width="211dp"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="Fecha nacimiento"
-                    android:hint="dd/mm/yy"
-                    android:onClick="showDatePickerDialog"
-                    android:focusable="false"
-                    android:inputType="date" />
-
-                <ImageButton
-                    android:id="@+id/btnCal"
-                    style="@android:style/Widget.DeviceDefault.ImageButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0"
-                    android:backgroundTint="@color/cardview_light_background"
-                    android:onClick="showDatePickerDialog"
-                    app:srcCompat="@drawable/calendar1" />
-            </LinearLayout>
+                android:autofillHints="Fecha nacimiento"
+                android:hint="dd/mm/yy"
+                android:onClick="showDatePickerDialog"
+                android:focusable="false"
+                android:inputType="date" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp">
+                android:layout_height="match_parent">
 
                 <EditText
                     android:id="@+id/nombre"
@@ -152,20 +132,29 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/telefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Número de teléfono"
+                    android:hint="Número de teléfono"
+                    android:inputType="phone"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:text="Sexo" />
 
             <RadioGroup
                 android:id="@+id/rdgSexo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -187,9 +176,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp">
+                android:layout_height="match_parent">
 
                 <EditText
                     android:id="@+id/ocupacion"
@@ -209,23 +196,21 @@
 
                 <Button
                     android:id="@+id/btnRegistrar"
-                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="188dp"
                     android:layout_height="wrap_content"
                     android:text="Registrar"
-                    android:textColor="#000F91"
+                    android:backgroundTint="@color/color_success"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
                     android:onClick="Checklogin"/>
 
                 <Button
                     android:id="@+id/btnCancelar"
-                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Cancelar"
                     android:onClick="limpiar"
-                    android:textColor="#000F91"
                     android:textSize="18sp" />
             </LinearLayout>
 

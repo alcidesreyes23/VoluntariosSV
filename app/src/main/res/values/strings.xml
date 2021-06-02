@@ -32,6 +32,13 @@
         <item>Software</item>
         <item>Salud</item>
     </string-array>
+    <string-array name="distancias">
+        <item>500 mts</item>
+        <item>1000 mts</item>
+        <item>2000 mts</item>
+        <item>5000 mts</item>
+    </string-array>
+
     <string name="title_activity_aviso">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -123,4 +130,15 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_home_institucion">HomeInstitucion</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="title_activity_place_picker">Map</string>
 </resources>

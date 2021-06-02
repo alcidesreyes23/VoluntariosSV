@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +56,9 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
     Rcv_Busqueda adapter;
     DatabaseReference ref;
     LatLng currentLocation = null;
+    SeekBar seekradio;
+    TextView seekindicator;
+    int radiomts = 1000;
 
     @Nullable
     @Override
@@ -71,6 +77,8 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         mapa = v.findViewById(R.id.mapa);
         ref = new Realtimedb().getAvisos();
         rcv = v.findViewById(R.id.rcv_resultados);
+        seekradio = v.findViewById(R.id.seekradio);
+        seekindicator = v.findViewById(R.id.seekindicator);
         adapter = new Rcv_Busqueda(this.getContext(),avisos);
     }
 
@@ -85,6 +93,8 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         rcv.setHasFixedSize(true);
         rcv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         rcv.setAdapter(adapter);
+
+        seekradio.setOnSeekBarChangeListener(new SeekRadioChange());
 
         mapa.onCreate(mapbundle);
         mapa.getMapAsync(this);
@@ -112,7 +122,7 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         googlemap.setMinZoomPreference(15);
         LatLng position = new LatLng(13.670048,-89.293314);
         googlemap.moveCamera(CameraUpdateFactory.newLatLng(position));
-        mapa.onResume();
+        //mapa.onResume();
     }
 
     @SuppressLint("MissingPermission")
@@ -124,35 +134,18 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
 
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
-        if(snapshot.getKey().equals("avisos")){
-            temp.clear();
-            for (DataSnapshot d: snapshot.getChildren()) {
-                temp.add(new Aviso(d));
+        avisos.clear();
+        for (DataSnapshot d : snapshot.getChildren()){
+            Aviso aviso = new Aviso(d);
+            Institucion institucion = aviso.getInstitucion();
+            double metros = Calculos.getDistancia(currentLocation,new LatLng(institucion.getLatitud(),institucion.getLongitud()));
+            if(metros <= radiomts){
+                aviso.setExtra(Conversiones.metrosToDistanciaLabel(metros));
+                addPin(institucion);
+                avisos.add(aviso);
             }
-            new Realtimedb().getInstituciones().addListenerForSingleValueEvent(this);
-        }else{
-            avisos.clear();
-            for (DataSnapshot d: snapshot.getChildren()) {
-                int n = temp.size();
-                for(int i = 0; i < n; i++){
-                    Aviso av = temp.get(i);
-                    if(d.getKey().equals(av.getInstitucionFK())){
-                        Institucion institucion = new Institucion(d);
-
-                        LatLng itPosicion = new LatLng(institucion.getLatitud(),institucion.getLongitud());
-                        double metros = Calculos.getDistancia(currentLocation,itPosicion);
-
-                        if(metros <= 2000){
-                            av.setInstitucion(new Institucion(d));
-                            av.setExtra(Conversiones.metrosToDistanciaLabel(metros));
-                            avisos.add(av);
-                        }
-
-                    }
-                }
-            }
-            adapter.notifyDataSetChanged();
         }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -167,6 +160,50 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
     public boolean onMyLocationButtonClick() {
         currentLocation = null;
         return false;
+    }
+
+    public class SeekRadioChange implements SeekBar.OnSeekBarChangeListener{
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            switch (seekBar.getProgress()){
+                case 1:
+                    radiomts = 500;
+                    seekindicator.setText("Radio de distancia: 500 metros");
+                    break;
+                case 2:
+                    radiomts = 1000;
+                    seekindicator.setText("Radio de distancia: 1 kilometro");
+                    break;
+                case 3:
+                    radiomts = 2000;
+                    seekindicator.setText("Radio de distancia: 2 kilometros");
+                    break;
+                case 4:
+                    radiomts = 2500;
+                    seekindicator.setText("Radio de distancia: 2.5 kilometros");
+                    break;
+                case 5:
+                    radiomts = 5000;
+                    seekindicator.setText("Radio de distancia: 5 kilometros");
+                    break;
+            }
+            ref.addListenerForSingleValueEvent(BuscarFragment.this);
+        }
+    }
+
+    public void addPin(Institucion institucion){
+        LatLng coor = new LatLng(institucion.getLatitud(),institucion.getLongitud());
+        googlemap.addMarker(new MarkerOptions().position(coor).title(institucion.getNombre()));
     }
 
     @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Datos de cuenta"
-                android:textColor="@color/black"
+                android:textColor="@color/text_secondary"
+                android:drawableLeft="@drawable/ic_account"
+                android:drawablePadding="8dp"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -30,14 +33,13 @@
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="?android:attr/listDivider" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/correo"
@@ -53,8 +55,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
                 app:passwordToggleEnabled="true">
 
                 <EditText
@@ -69,8 +69,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -89,7 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="Datos de la institución"
-                android:textColor="@color/black"
+                android:textColor="@color/text_secondary"
+                android:drawableLeft="@drawable/ic_store"
+                android:drawablePadding="8dp"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -97,41 +97,15 @@
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:background="?android:attr/listDivider" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/direccion"
-                    android:layout_width="211dp"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="Dirección"
-                    android:hint="Dirección"
-                    android:focusable="false"
-                    android:inputType="date" />
-
-                <ImageButton
-                    android:id="@+id/btnCal"
-                    style="@android:style/Widget.DeviceDefault.ImageButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0"
-                    android:onClick="map"
-                    android:backgroundTint="@color/cardview_light_background"
-                    app:srcCompat="@drawable/map" />
-            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp">
+                android:layout_height="match_parent">
 
                 <EditText
                     android:id="@+id/nombre"
@@ -145,36 +119,24 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:text="Rubro"
-                android:textSize="18sp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
+                android:text="Rubro" />
+
+            <Spinner
+                android:id="@+id/rubro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rectangle_round"
+                android:padding="12dp"
+                />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
-                android:hint="Rubro"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true">
-
-                <Spinner
-                    android:id="@+id/rubro"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp">
+                android:layout_height="match_parent">
 
                 <EditText
                     android:id="@+id/descripcion"
@@ -186,31 +148,72 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/telefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Telefono"
+                    android:hint="Número de teléfono"
+                    android:inputType="phone" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/direccion"
+                    android:layout_weight="4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Dirección"
+                    android:hint="Ubicación de la institución"
+                    android:focusable="false" />
+
+                <ImageButton
+                    android:id="@+id/btnCal"
+                    style="@android:style/Widget.DeviceDefault.ImageButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:onClick="map"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@android:color/transparent"
+                    app:srcCompat="@drawable/map" />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="24dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btnRegistrar"
-                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="188dp"
                     android:layout_height="wrap_content"
                     android:text="Registrar"
-                    android:textColor="#000F91"
                     android:onClick="Checklogin"
+                    android:backgroundTint="@color/color_success"
+                    android:textColor="@color/white"
                     android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/btnCancelar"
-                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Cancelar"
                     android:onClick="limpiar"
-                    android:textColor="#000F91"
                     android:textSize="18sp" />
             </LinearLayout>
 

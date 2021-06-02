@@ -9,6 +9,8 @@ public class Voluntario {
     private long nacimiento;
     private String ocupacion;
     private String fotoPerfil;
+    private String sexo;
+    private String telefono;
 
     public Voluntario() {
     }
@@ -18,7 +20,9 @@ public class Voluntario {
         this.setNombre(ds.child("nombre").getValue().toString());
         this.setNacimiento(ds.child("nacimiento").getValue(Long.class));
         this.setOcupacion(ds.child("ocupacion").getValue().toString());
-        this.setFotoPerfil(ds.child("fotoPerfil").getValue().toString());
+        this.setFotoPerfil(ds.getKey() + ".jpg");
+        this.setSexo(ds.child("sexo").getValue().toString());
+        this.setTelefono(ds.child("telefono").getValue().toString());
     }
 
     public String getId() {
@@ -56,4 +60,20 @@ public class Voluntario {
     public String getFotoPerfil() {return fotoPerfil; }
 
     public void setFotoPerfil(String fotoPerfil) { this.fotoPerfil = fotoPerfil;}
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 }

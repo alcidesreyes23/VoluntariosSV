@@ -2,6 +2,9 @@ package com.da39a.voluntariossv.modelos;
 
 import com.google.firebase.database.DataSnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Institucion {
 
     private String id;
@@ -81,4 +84,21 @@ public class Institucion {
     public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
+
+
+    public Map<String,Object> toMap(){
+        Map<String,Object> data = new HashMap<>();
+        data.put("nombre",this.getNombre());
+        data.put("descripcion",this.getDescripcion());
+        data.put("rubro",this.getRubro());
+        data.put("telefono",this.getTelefono());
+
+        Map<String,Object> localizacion = new HashMap<>();
+        localizacion.put("latitud",this.getLatitud());
+        localizacion.put("longitud",this.getLongitud());
+        data.put("localizacion",localizacion);
+
+        return data;
+    }
+
 }

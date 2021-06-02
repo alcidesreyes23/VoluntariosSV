@@ -40,6 +40,8 @@ import com.da39a.voluntariossv.utils.Constantes;
 import com.da39a.voluntariossv.utils.Conversiones;
 import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DataSnapshot;
@@ -64,7 +66,7 @@ public class ConfiguracionesFragment extends Fragment {
     //region DECLARACION DE VARIABLES
     Context ctx;
     Button btn_signout,btnActualizar;
-    EditText edtTelefono, edtFecha, edtNombre, edtOcupacion, edtSuf;
+    EditText edtTelefono, edtFecha, edtNombre, edtOcupacion;
     ImageButton btnCalendar;
     RadioButton rM, rF;
     CustomAlerts alerts;
@@ -89,10 +91,6 @@ public class ConfiguracionesFragment extends Fragment {
         btn_signout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             ConfiguracionesFragment.this.startActivity(new Intent(ctx, Login.class));
-            //13.671402, -89.292708
-            LatLng puntoA = new LatLng(13.670081,-89.293372);
-            LatLng puntoB = new LatLng(13.671402,-89.292708);
-            Log.e("DISTANCIA","MTS: " + Calculos.getDistancia(puntoA,puntoB));
         });
         return root;
     }
@@ -143,7 +141,6 @@ public class ConfiguracionesFragment extends Fragment {
         edtFecha = v.findViewById(R.id.direccion);
         edtNombre = v.findViewById(R.id.nombre);
         edtOcupacion = v.findViewById(R.id.ocupacion);
-        edtSuf = v.findViewById(R.id.sufijo);
         //Buttons
         btnActualizar = v.findViewById(R.id.btnRegistrar);
         btnCalendar  = v.findViewById(R.id.btnCal);
@@ -155,7 +152,7 @@ public class ConfiguracionesFragment extends Fragment {
         //Alerts
         alerts =  new CustomAlerts(v.getContext());
         //Eventos Click
-        btnCalendar.setOnClickListener(view -> showDatePickerDialog());
+        edtFecha.setOnClickListener(view -> showDatePickerDialog());
         btnActualizar.setOnClickListener(view -> Actualizar());
         perfil.setOnClickListener(v1 -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
@@ -281,7 +278,6 @@ public class ConfiguracionesFragment extends Fragment {
     //Metodo que acutaliza
     public  void Actualizar () {
         String tel = edtTelefono.getText().toString();
-        String suf = edtSuf.getText().toString();
         // String fecha =  edtFecha.getText().toString();
         String nombre = edtNombre.getText().toString();
         String ocupacion = edtOcupacion.getText().toString();
@@ -294,18 +290,14 @@ public class ConfiguracionesFragment extends Fragment {
         datos.put("ocupacion",ocupacion);
         datos.put("nacimiento",fechaLong);
         datos.put("sexo",genero);
-        datos.put("telefono",null);
-
-        Map<String, Object> dataTel = new HashMap<>();
-        dataTel.put("numero",tel);
-        dataTel.put("sufijo",suf);
+        datos.put("telefono",tel);
 
         //Valida que se haya seleccionado una foto
         if (estado) {
             //Si se ha selecionado la sube y guarda los datos
             SubirFoto(uriPerfil, url -> {
                 datos.put("fotoPerfil", url);
-                EnviarDatos(datos,dataTel);
+                EnviarDatos(datos);
             });
             estado = false;
         } else {
@@ -316,38 +308,35 @@ public class ConfiguracionesFragment extends Fragment {
             }
             else  datos.put("fotoPerfil", uriPerfil.toString());
 
-            EnviarDatos(datos,dataTel);
+            EnviarDatos(datos);
         }
     }
 
     //Funciona para enviar los datos actualizado a la base
-    public void EnviarDatos(Map<String,Object> datos, Map<String,Object> dataTel){
+    public void EnviarDatos(Map<String,Object> datos){
         String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        new Realtimedb().getVoluntario(uid).updateChildren(datos).addOnSuccessListener(aVoid ->
-                new Realtimedb().getVoluntario(uid).child("telefono").updateChildren(dataTel).addOnSuccessListener(aVoid1 -> {
-                    alerts.setType(CustomAlerts.MODALTYPE.SUCCESS);
-                    alerts.setTitle("HECHO");
-                    alerts.setMensage("Los datos han sido actualizados.");
-                    alerts.setEstado(false);
+        new Realtimedb().getVoluntario(uid).updateChildren(datos).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof FirebaseAuthException){
+                    alerts.setType(CustomAlerts.MODALTYPE.DANGER);
+                    alerts.setTitle("Error al modificar cuenta");
+                    alerts.setMensage(e.getMessage());
                     alerts.show();
-                }).addOnFailureListener(e -> {
-                    if (e instanceof FirebaseAuthException){
-                        alerts.setType(CustomAlerts.MODALTYPE.DANGER);
-                        alerts.setTitle("Error al registrar cuenta");
-                        alerts.setMensage(e.getMessage());
-                        alerts.show();
-                    }
-                })).addOnFailureListener(e -> {
-            if (e instanceof FirebaseAuthException){
-                alerts.setType(CustomAlerts.MODALTYPE.DANGER);
-                alerts.setTitle("Error al registrar cuenta");
-                alerts.setMensage(e.getMessage());
+                }
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                alerts.setType(CustomAlerts.MODALTYPE.SUCCESS);
+                alerts.setTitle("Datos Actualizados!");
+                alerts.setMensage("Se modificaron los datos de tu usuario correctamente");
                 alerts.show();
             }
         });
     }
-    //endregion
 
+    //endregion
     //region OBTENER LOS DATOS ACTUALIZADOS
     //Carga los datos del perfil
     public void LoadUser () {
@@ -379,8 +368,7 @@ public class ConfiguracionesFragment extends Fragment {
                         }
                         //Validacion por si no existe foto
                         if (snapshot.child("telefono").exists()) {
-                            edtSuf.setText(Objects.requireNonNull(snapshot.child("telefono").child("sufijo").getValue()).toString());
-                            edtTelefono.setText(Objects.requireNonNull(snapshot.child("telefono").child("numero").getValue()).toString());
+                            edtTelefono.setText(snapshot.child("telefono").getValue().toString());
                         }
                     }
                 }

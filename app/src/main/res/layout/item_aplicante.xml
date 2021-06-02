@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="16dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civ_voluntario"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/perfil_defecto"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#ccc"
+                    />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@id/civ_voluntario"
+                    android:layout_marginStart="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/vol_nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Edgar Vladimir Retana Carranza"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/vol_ocupacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estudiante de Ingenieria"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/vol_edadsexo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Hombre - 24 años"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/browser_actions_divider_color"
+                />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_aceptar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_check"
+                    android:text="Aceptar y Notificar"
+                    android:drawablePadding="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:textSize="12sp"
+                    />
+
+                <Button
+                    android:id="@+id/btn_llamar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_phone"
+                    android:text="Llamar"
+                    android:drawablePadding="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:textSize="12sp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

@@ -66,28 +66,14 @@ public class Login extends AppCompatActivity implements OnFailureListener, OnSuc
             return;
         }
 
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo,contra).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(correo,contra)
                 .addOnFailureListener(this)
                 .addOnSuccessListener(this);
-
     }
 
     @Override
     public void onFailure(@NonNull Exception e) {
-
         if(e instanceof FirebaseAuthInvalidUserException){
             alerts.setType(CustomAlerts.MODALTYPE.WARNING);
             alerts.setTitle("Usuario desconocido");

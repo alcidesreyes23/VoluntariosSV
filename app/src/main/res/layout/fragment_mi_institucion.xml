@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.mi_institucion.MiInstitucionFragment">
+
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Datos de la institución"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:drawableLeft="@drawable/ic_store"
+            android:drawablePadding="8dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/browser_actions_divider_color"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            />
+
+        <RelativeLayout
+            android:background="@drawable/shape_rectangle"
+            android:layout_width="match_parent"
+            android:layout_height="175dp">
+
+            <ImageView
+                android:id="@+id/institucion_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/img_landscape"
+                android:scaleType="centerCrop"
+                android:layout_margin="8dp"
+                />
+
+            <ImageView
+                android:id="@+id/btn_gallery"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                android:background="@drawable/shape_circle"
+                android:src="@drawable/ic_menu_camera"
+                android:padding="6dp"
+                app:tint="@color/white"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textColor="#90ffffff"
+                android:text="Fotografia de referencia"
+                android:layout_margin="16dp"
+                />
+
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/institucion_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Nombre de institución"
+                android:hint="Nombre de institución"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/institucion_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Descripción de institución"
+                android:hint="Descripción de institución"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/institucion_telefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Número de teléfono"
+                android:hint="Número de teléfono"
+                android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rubro de la institución"
+            android:layout_marginTop="16dp"
+            />
+
+        <Spinner
+            android:id="@+id/institucion_rubro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rectangle_round"
+            android:padding="8dp"
+            android:entries="@array/rubros"
+            android:layout_marginTop="4dp"
+            />
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/institucion_direccion"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autofillHints="Dirección"
+                android:hint="Ubicación de la institución"
+                android:focusable="false" />
+
+            <ImageView
+                android:id="@+id/btnMapPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/map"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                android:background="@drawable/shape_rectangle_round"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar Cambios"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_success"
+            android:textColor="@color/white"
+
+            />
+
+
+    </LinearLayout>
+
+</ScrollView>
