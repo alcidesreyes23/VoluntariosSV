@@ -38,6 +38,38 @@
         <item>2000 mts</item>
         <item>5000 mts</item>
     </string-array>
+    <string-array name="horas">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="minutos">
+        <item>00</item>
+        <item>05</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+    </string-array>
+    <string-array name="jornada">
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
 
     <string name="title_activity_aviso">ScrollingActivity</string>
     <string name="large_text">
@@ -141,4 +173,5 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_place_picker">Map</string>
+    <string name="title_activity_citar">Citar</string>
 </resources>

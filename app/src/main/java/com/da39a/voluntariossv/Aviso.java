@@ -138,7 +138,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
             btn_solicitar.setVisibility(View.GONE);
 
             //RCV
-            adapter = new Rcv_Aplicantes(this,voluntarios);
+            adapter = new Rcv_Aplicantes(this,voluntarios,avisoId);
             rcv_aplicantes.setHasFixedSize(true);
             rcv_aplicantes.setLayoutManager(new LinearLayoutManager(this));
             rcv_aplicantes.setAdapter(adapter);
@@ -168,7 +168,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
                 CustomAlerts ca = new CustomAlerts(this);
                 ca.setTitle("Eliminar Aviso?");
                 ca.setMensage("Desea eliminar este aviso permanentemente?");
-                ca.setType(CustomAlerts.MODALTYPE.INFO);
+                ca.setType(CustomAlerts.MODALTYPE.QUESTION);
                 ca.setPositive(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

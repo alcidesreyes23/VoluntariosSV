@@ -16,7 +16,7 @@ import com.da39a.voluntariossv.firelisteners.Checklogin;
 
 public class CustomAlerts{
 
-    public enum MODALTYPE { SUCCESS, DANGER, WARNING, INFO }
+    public enum MODALTYPE { SUCCESS, DANGER, WARNING, INFO, QUESTION }
     private String title;
     private String message;
     private MODALTYPE type;
@@ -80,6 +80,11 @@ public class CustomAlerts{
                 modal_header.setBackgroundColor(ctx.getResources().getColor(R.color.color_info));
                 modal_icon.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_info_msg));
                 modal_title.setText("Informacion!");
+                break;
+            case QUESTION:
+                modal_header.setBackgroundColor(ctx.getResources().getColor(R.color.color_question));
+                modal_icon.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_question));
+                modal_title.setText("Pregunta?");
                 break;
         }
 

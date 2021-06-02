@@ -86,7 +86,6 @@ public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder>{
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putString("avisoId",avi.getId());
-                    bundle.putString("institucionId",avi.getInstitucionFK());
                     Intent intent = new Intent(ctx, com.da39a.voluntariossv.Aviso.class);
                     intent.putExtra("parametros",bundle);
                     ctx.startActivity(intent);

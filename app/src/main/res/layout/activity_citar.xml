@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Citar">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/MyAppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/MyAppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Programar cita"
+            android:drawableLeft="@drawable/ic_time_add"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/browser_actions_divider_color"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de encargado:"
+            />
+        <EditText
+            android:id="@+id/cita_encargado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre Apellido"
+            />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha:"
+            />
+        <EditText
+            android:id="@+id/cita_fecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="dd/MM/yyyy"
+            android:focusable="false"
+            android:onClick="showDatePicker"
+            />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hora:"
+            />
+
+        <LinearLayout
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/cita_hora"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_rectangle_round"
+                android:padding="8dp"
+                android:entries="@array/horas"
+                />
+
+            <Spinner
+                android:id="@+id/cita_minutos"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_rectangle_round"
+                android:padding="8dp"
+                android:entries="@array/minutos"
+                />
+
+            <Spinner
+                android:id="@+id/cita_jornada"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rectangle_round"
+                android:padding="8dp"
+                android:entries="@array/jornada"
+                />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Oficina o salón de encuentro:"
+            />
+        <EditText
+            android:id="@+id/cita_oficina"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Salón de reunión"
+            />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mensaje:"
+            />
+        <EditText
+            android:id="@+id/cita_mensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mensaje al voluntario"
+            />
+
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_check"
+        app:tint="@color/white"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

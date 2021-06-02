@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.da39a.voluntariossv.Aviso;
+import com.da39a.voluntariossv.Citar;
 import com.da39a.voluntariossv.R;
+import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.modelos.Voluntario;
 import com.da39a.voluntariossv.utils.Calculos;
 import com.google.firebase.database.DatabaseReference;
@@ -26,10 +28,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Rcv_Aplicantes extends RecyclerView.Adapter<Rcv_Aplicantes.VHolder>{
 
     Context ctx;
+    String avisoId;
     List<Voluntario> aplicantes;
 
-    public Rcv_Aplicantes(Context ctx, List<Voluntario> aplicantes) {
+    public Rcv_Aplicantes(Context ctx, List<Voluntario> aplicantes, String avid) {
         this.ctx = ctx;
+        this.avisoId = avid;
         this.aplicantes = aplicantes;
     }
 
@@ -70,7 +74,7 @@ public class Rcv_Aplicantes extends RecyclerView.Adapter<Rcv_Aplicantes.VHolder>
             tvOcupacion.setText(v.getOcupacion());
             tvEdadSexo.setText(v.getSexo() + " - " + Calculos.getEdadByMilisdate(v.getNacimiento()) + " años");
             btnLlamar.setOnClickListener(new PhoneIntent(v.getTelefono()));
-            btnAceptar.setOnClickListener(new Notificar());
+            btnAceptar.setOnClickListener(new Notificar(v.getId()));
             //Glide.with(ctx).load(v.getFotoPerfil()).into(civ);
         }
 
@@ -86,15 +90,18 @@ public class Rcv_Aplicantes extends RecyclerView.Adapter<Rcv_Aplicantes.VHolder>
         }
 
         private class Notificar implements View.OnClickListener{
-            DatabaseReference ref;
+            String uid;
 
-            public Notificar() {
-                this.ref = ref;
+            public Notificar(String uid) {
+                this.uid = uid;
             }
 
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(ctx, Citar.class);
+                intent.putExtra("uid",uid);
+                intent.putExtra("avisoId",avisoId);
+                ctx.startActivity(intent);
             }
         }
 

@@ -11,11 +11,16 @@
     <color name="text_primary">#222</color>
     <color name="text_secondary">#757575</color>
 
+
     <color name="color_success">#388E3C</color>
     <color name="color_danger">#D32F2F</color>
     <color name="color_warning">#FFA000</color>
     <color name="color_info">#0288D1</color>
-    <color name="color_question">#0097A7</color>
+    <color name="color_question">#666</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
 
     <color name="color_deep_orange">#E64A19</color>
 

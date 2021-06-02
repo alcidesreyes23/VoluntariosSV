@@ -55,5 +55,13 @@ public class Realtimedb {
         return getFavoritosUsuario(uid).child(avisoid);
     }
 
+    public DatabaseReference getCitas(){
+        return this.ref.child("citas");
+    }
+
+    public DatabaseReference getCitasUsuario(String uid){
+        return getCitas().child(uid);
+    }
+
 
 }
