@@ -123,6 +123,8 @@ public class ConfiguracionesFragment extends Fragment {
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {

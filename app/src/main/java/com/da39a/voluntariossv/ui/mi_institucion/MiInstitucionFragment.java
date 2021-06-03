@@ -1,5 +1,6 @@
 package com.da39a.voluntariossv.ui.mi_institucion;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,8 +26,13 @@ import com.da39a.voluntariossv.utils.Constantes;
 import com.da39a.voluntariossv.utils.Conversiones;
 import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.da39a.voluntariossv.utils.Localbase;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,9 +45,10 @@ public class MiInstitucionFragment extends Fragment {
     EditText et_nombre,et_descripcion,et_telefono,et_ubicacion;
     ImageView institucion_img,btn_gallery,btn_map;
     Institucion miInstitucion;
+    double latitud,longitud;
     Spinner spin_rubro;
     Button btn_guardar;
-    double latitud,longitud;
+    Uri picuri = null;
 
     DatabaseReference ref;
 
@@ -131,11 +138,12 @@ public class MiInstitucionFragment extends Fragment {
                 ref.setValue(updated.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        CustomAlerts ca = new CustomAlerts(MiInstitucionFragment.this.getContext());
-                        ca.setType(CustomAlerts.MODALTYPE.SUCCESS);
-                        ca.setTitle("Datos Actualizados!");
-                        ca.setMensage("Los nuevos datos han sido guardados exitosamente!");
-                        ca.show();
+                        Log.e("PICURI",picuri.getPath());
+                        if(picuri != null){
+                            uploadPicture();
+                        }else{
+                            datosEnviados();
+                        }
                     }
                 });
             }else{
@@ -148,6 +156,47 @@ public class MiInstitucionFragment extends Fragment {
         }
     }
 
+    private void uploadPicture(){
+        ProgressDialog pgd = new ProgressDialog(this.getContext());
+        pgd.setTitle("Subiendo imagen");
+        pgd.setCancelable(false);
+        pgd.setCanceledOnTouchOutside(false);
+        pgd.show();
+
+        StorageReference stg = FirebaseStorage.getInstance().getReference().child("Instituciones").child(miInstitucion.getId()+".jpg");
+        stg.putFile(picuri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                long progress = (snapshot.getBytesTransferred() / snapshot.getTotalByteCount()) * 100;
+                pgd.setProgress((int) progress);
+                if(progress == 100) pgd.dismiss();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                picuri = null;
+                datosEnviados();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                CustomAlerts ca = new CustomAlerts(MiInstitucionFragment.this.getContext());
+                ca.setTitle("Error!");
+                ca.setMensage("No se pudo subir la imagen al servidor");
+                ca.setType(CustomAlerts.MODALTYPE.DANGER);
+                ca.show();
+            }
+        });
+    }
+
+    private void datosEnviados(){
+        CustomAlerts ca = new CustomAlerts(MiInstitucionFragment.this.getContext());
+        ca.setType(CustomAlerts.MODALTYPE.SUCCESS);
+        ca.setTitle("Datos Actualizados!");
+        ca.setMensage("Los nuevos datos han sido guardados exitosamente!");
+        ca.show();
+    }
+
     //ACTIVITY RESULT
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -155,14 +204,11 @@ public class MiInstitucionFragment extends Fragment {
         if(requestCode == ACTIVITY_MAP){
             if(data != null) setUbicacion(data);
         }else if(requestCode == ACTIVITY_GALLERY){
-            if(data != null) setImageView(data);;
+            if(data != null) {
+                picuri = data.getData();
+                Glide.with(this.getContext()).load(data.getData()).into(institucion_img);
+            }
         }
-    }
-
-    public void setImageView(Intent data){
-        String realpath = Conversiones.UriRealPath(this.getContext(),data.getData());
-        Log.e("RESULT",realpath);
-        Glide.with(this.getContext()).load(realpath).into(institucion_img);
     }
 
     public void setUbicacion(Intent data){

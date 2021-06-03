@@ -18,10 +18,12 @@ import com.da39a.voluntariossv.Citar;
 import com.da39a.voluntariossv.R;
 import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.modelos.Voluntario;
+import com.da39a.voluntariossv.ui.configuraciones.ConfiguracionesFragment;
 import com.da39a.voluntariossv.utils.Calculos;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -75,7 +77,7 @@ public class Rcv_Aplicantes extends RecyclerView.Adapter<Rcv_Aplicantes.VHolder>
             tvEdadSexo.setText(v.getSexo() + " - " + Calculos.getEdadByMilisdate(v.getNacimiento()) + " años");
             btnLlamar.setOnClickListener(new PhoneIntent(v.getTelefono()));
             btnAceptar.setOnClickListener(new Notificar(v.getId()));
-            //Glide.with(ctx).load(v.getFotoPerfil()).into(civ);
+            Glide.with(ctx).load(v.getFotoPerfil()).dontAnimate().fitCenter().centerCrop().into(civ);
         }
 
         private class PhoneIntent implements View.OnClickListener{

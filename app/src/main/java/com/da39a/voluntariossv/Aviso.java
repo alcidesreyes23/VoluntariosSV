@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.da39a.voluntariossv.adapters.Rcv_Aplicantes;
 import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.modelos.Institucion;
@@ -24,8 +25,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,6 +39,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +54,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +69,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
 
     Bundle bundle;
     String avisoId;
+    ImageView headerimg;
     CustomAlerts alerts;
     Button btn_solicitar;
     Rcv_Aplicantes adapter;
@@ -70,12 +78,14 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
     FloatingActionButton fab;
     RecyclerView rcv_aplicantes;
     List<Voluntario> voluntarios;
+    boolean isInstitucion = false;
+    StorageReference stgreference;
     FusedLocationProviderClient fused;
     CollapsingToolbarLayout collapsingToolbar;
     DatabaseReference refAviso, refFavoritos, refVoluntarios;
     LinearLayout btn_ubicacion, btn_telefono, aplicantes_content;
-    TextView tv_descripcion, tv_titulo, tv_expiracion, tv_telefono, tv_vacantes, tv_institucion_nombre, tv_rubro, tv_rangoedad;
-    boolean isInstitucion = false;
+    TextView tv_descripcion, tv_titulo, tv_expiracion, tv_telefono, tv_vacantes, tv_institucion_nombre, tv_rubro, tv_rangoedad,tv_voluntariado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +105,10 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
 
     public void init() {
         fab = findViewById(R.id.fab);
-        collapsingToolbar.setTitle(".");
+        collapsingToolbar.setTitle(" ");
 
+
+        headerimg = findViewById(R.id.headerimg);
         btn_solicitar = findViewById(R.id.btn_aplicar);
         btn_telefono = findViewById(R.id.btn_aviso_telefono);
         btn_ubicacion = findViewById(R.id.btn_aviso_ubicacion);
@@ -108,6 +120,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         tv_expiracion = findViewById(R.id.aviso_expiracion);
         tv_descripcion = findViewById(R.id.aviso_descripcion);
         tv_vacantes = findViewById(R.id.aviso_vacantes_disponibles);
+        tv_voluntariado = findViewById(R.id.aviso_tipovoluntariado);
         tv_institucion_nombre = findViewById(R.id.aviso_institucion_nombre);
 
         aplicantes_content = findViewById(R.id.aplicantes_content);
@@ -120,6 +133,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         alerts = new CustomAlerts(this);
         refAviso = new Realtimedb().getAviso(avisoId);
         refVoluntarios = new Realtimedb().getVoluntarios();
+        stgreference = FirebaseStorage.getInstance().getReference().child("Instituciones");
         refFavoritos = new Realtimedb().getFavoritosUsuario(FirebaseAuth.getInstance().getUid());
     }
 
@@ -134,7 +148,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
     public void mutableView(){
         isInstitucion = new Localbase(this).getUsuario().getTipo().equalsIgnoreCase("institucion");
         if(isInstitucion){
-            fab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_close));
+            fab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_close_white));
             btn_solicitar.setVisibility(View.GONE);
 
             //RCV
@@ -233,10 +247,15 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
             tv_descripcion.setText(aviso.getDescripcion());
             tv_vacantes.setText(aviso.getVacantes()+"");
             tv_telefono.setText(aviso.getInstitucion().getTelefono());
+            tv_voluntariado.setText(aviso.getVoluntariado());
             tv_expiracion.setText(Conversiones.milisToLargeDateString(aviso.getExpiracion()));
             tv_rangoedad.setText(aviso.getEdadmin() + " - " + aviso.getEdadmax() + " años");
             btn_telefono.setOnClickListener(new PhoneIntent(aviso.getInstitucion().getTelefono()));
             btn_ubicacion.setOnClickListener(new GoogleMapIntent(new LatLng(aviso.getInstitucion().getLatitud(),aviso.getInstitucion().getLongitud())));
+
+            stgreference = stgreference.child(aviso.getInstitucion().getId() + ".jpg");
+            stgreference.getDownloadUrl().addOnSuccessListener(new DowloadImg());
+
 
             if(isInstitucion){
                 aplicantes = aviso.getAplicantes();
@@ -255,6 +274,15 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         alerts.setMensage("El aviso no existe o no tienes conexion a internet para cargar los datos");
         alerts.show();
     }
+
+    private class DowloadImg implements OnSuccessListener<Uri>{
+        @Override
+        public void onSuccess(Uri uri) {
+            Glide.with(Aviso.this).load(uri).into(headerimg);
+        }
+    }
+
+
 
     private class PhoneIntent implements View.OnClickListener{
         String phone;

@@ -25,6 +25,7 @@ public class Aviso {
     private Institucion institucion;
     private List<String> aplicantes;
     private String extra;
+    private String voluntariado;
 
     public Aviso(){
 
@@ -39,6 +40,7 @@ public class Aviso {
         this.setEdadmax(d.child("edadmax").getValue(Integer.class));
         this.setEdadmin(d.child("edadmin").getValue(Integer.class));
         this.setExpiracion(d.child("expiracion").getValue(Long.class));
+        this.setVoluntariado(d.child("voluntariado").getValue().toString());
         this.setInstitucion(new Institucion(d.child("institucion").getChildren().iterator().next()));
         this.setAplicantes(new ArrayList<>());
         if(d.child("aplicantes").exists()){
@@ -96,10 +98,6 @@ public class Aviso {
         this.institucion = institucion;
     }
 
-    public void setInstitucionFK(String institucionFK) {
-        this.institucionFK = institucionFK;
-    }
-
     public List<String> getAplicantes() {
         return aplicantes;
     }
@@ -107,14 +105,6 @@ public class Aviso {
     public void setAplicantes(List<String> aplicantes) {
         this.aplicantes = aplicantes;
     }
-
-    public String getInstitucionFK() {
-        return institucionFK;
-    }
-
-    /*public void setInstitucionFK(String institucionFK) {
-        this.institucionFK = institucionFK;
-    }*/
 
     public String getExtra() {
         return extra;
@@ -146,5 +136,13 @@ public class Aviso {
 
     public void setEdadmin(int edadmin) {
         this.edadmin = edadmin;
+    }
+
+    public String getVoluntariado() {
+        return voluntariado;
+    }
+
+    public void setVoluntariado(String voluntariado) {
+        this.voluntariado = voluntariado;
     }
 }

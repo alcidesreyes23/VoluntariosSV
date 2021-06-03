@@ -31,6 +31,15 @@
         <item>Turismo</item>
         <item>Software</item>
         <item>Salud</item>
+        <item>Ganadería</item>
+        <item>Pesca</item>
+        <item>Construcción</item>
+        <item>Telecomnicaciones</item>
+        <item>Editorial</item>
+        <item>Mercadotecnia</item>
+        <item>Ventas</item>
+        <item>Otra</item>
+
     </string-array>
     <string-array name="distancias">
         <item>500 mts</item>

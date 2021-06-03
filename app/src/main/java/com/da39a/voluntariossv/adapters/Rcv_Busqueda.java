@@ -70,7 +70,7 @@ public class Rcv_Busqueda extends RecyclerView.Adapter<Rcv_Busqueda.VHolder>{
 
         public void setUI(Aviso avi){
             tvInstitucion.setText(avi.getInstitucion().getNombre());
-            tvRubro.setText(avi.getInstitucion().getRubro());
+            tvRubro.setText(avi.getVoluntariado());
             tvDescripcion.setText(avi.getTitulo());
 
             if(avi.getExtra() == null || avi.getExtra().isEmpty()){

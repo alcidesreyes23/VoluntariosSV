@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ public class PublicarAvisoFragment extends Fragment implements View.OnClickListe
     TextView etSeekMin,etSeekMax;
     SeekBar seekEdadMin,seekEdadMax;
     Button btnPublicar;
+    RadioGroup radiogroup;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_publicar_aviso, container, false);
@@ -53,6 +56,7 @@ public class PublicarAvisoFragment extends Fragment implements View.OnClickListe
         seekEdadMax = v.findViewById(R.id.seek_edadmax);
         seekEdadMin = v.findViewById(R.id.seek_edadmin);
         btnPublicar = v.findViewById(R.id.btn_publicar);
+        radiogroup = v.findViewById(R.id.rbgvoluntariado);
     }
 
     public void load(){
@@ -160,6 +164,18 @@ public class PublicarAvisoFragment extends Fragment implements View.OnClickListe
         newFragment.show(requireActivity().getSupportFragmentManager(), "datePicker");
     }
 
+    public String getSelectedVoluntariado(){
+        int id = radiogroup.getCheckedRadioButtonId();
+        if(id == R.id.rb_tipo1){
+            return "Servicio comunitario";
+        }else if(id == R.id.rb_tipo2){
+            return "Horas sociales";
+        }else if(id == R.id.rb_tipo3){
+            return "Practicas profesionales";
+        }
+        return "N/A";
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -186,6 +202,7 @@ public class PublicarAvisoFragment extends Fragment implements View.OnClickListe
             data.put("expiracion",Long.parseLong(etExpiracion.getTag().toString()));
             data.put("edadmin",seekEdadMin.getProgress());
             data.put("edadmax",seekEdadMax.getProgress());
+            data.put("voluntariado",getSelectedVoluntariado());
 
             ref.push().setValue(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -212,6 +229,7 @@ public class PublicarAvisoFragment extends Fragment implements View.OnClickListe
         seekEdadMax.setProgress(15);
         etSeekMax.setText("Maxima: ");
         etSeekMin.setText("Minima: ");
+
     }
 
 }

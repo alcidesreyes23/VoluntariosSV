@@ -134,18 +134,22 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
 
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
-        avisos.clear();
-        for (DataSnapshot d : snapshot.getChildren()){
-            Aviso aviso = new Aviso(d);
-            Institucion institucion = aviso.getInstitucion();
-            double metros = Calculos.getDistancia(currentLocation,new LatLng(institucion.getLatitud(),institucion.getLongitud()));
-            if(metros <= radiomts){
-                aviso.setExtra(Conversiones.metrosToDistanciaLabel(metros));
-                addPin(institucion);
-                avisos.add(aviso);
+
+        if(currentLocation != null){
+            avisos.clear();
+            for (DataSnapshot d : snapshot.getChildren()){
+                Aviso aviso = new Aviso(d);
+                Institucion institucion = aviso.getInstitucion();
+                double metros = Calculos.getDistancia(currentLocation,new LatLng(institucion.getLatitud(),institucion.getLongitud()));
+                if(metros <= radiomts){
+                    aviso.setExtra(Conversiones.metrosToDistanciaLabel(metros));
+                    addPin(institucion);
+                    avisos.add(aviso);
+                }
             }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+
     }
 
     @Override

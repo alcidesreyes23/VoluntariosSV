@@ -141,6 +141,44 @@
             android:layout_height="wrap_content"
             />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Tipo de voluntariado:"
+            android:layout_marginBottom="4dp"
+            />
+
+        <RadioGroup
+            android:id="@+id/rbgvoluntariado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_tipo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Servicio Comunitario"
+                android:checked="true"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_tipo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Horas Sociales"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_tipo3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prácticas Profesionales"
+                />
+
+
+
+        </RadioGroup>
 
 
         <Button

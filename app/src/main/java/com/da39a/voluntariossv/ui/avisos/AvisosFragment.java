@@ -22,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +31,10 @@ import java.util.List;
 public class AvisosFragment extends Fragment {
 
     RecyclerView rcv;
-    DatabaseReference refFav,refAvisos,refInstituciones;
-    List<Aviso> temp,avisos;
-    List<String> favoritos;
     Rcv_Busqueda adapter;
+    List<String> favoritos;
+    List<Aviso> temp,avisos;
+    DatabaseReference refFav,refAvisos,refInstituciones;
 
     @Nullable
     @Override
@@ -82,40 +84,21 @@ public class AvisosFragment extends Fragment {
     private class LoadAvisos implements ValueEventListener{
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            temp.clear();
+            avisos.clear();
             for (DataSnapshot d : snapshot.getChildren()){
                 if(favoritos.contains(d.getKey())){
-                    temp.add(new Aviso(d));
+                    avisos.add(new Aviso(d));
                 }
             }
-            refInstituciones.addListenerForSingleValueEvent(new LoadInstituciones());
-        }
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-
-        }
-    }
-
-    private class LoadInstituciones implements ValueEventListener{
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            avisos.clear();
-            for(DataSnapshot d : snapshot.getChildren()){
-                for (Aviso av : temp){
-                    if(d.getKey().equals(av.getInstitucionFK())){
-                        av.setInstitucion(new Institucion(d));
-                    }
-                }
-            }
-            avisos.addAll(temp);
             adapter.notifyDataSetChanged();
         }
-
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
 
         }
     }
+
+
 
 
 
