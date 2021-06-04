@@ -1,9 +1,13 @@
 package com.da39a.voluntariossv;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -56,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
             new Realtimedb().getUsuario(user.getUid()).addListenerForSingleValueEvent(new Checklogin(this));
         }
     }
+
+
 
 
 

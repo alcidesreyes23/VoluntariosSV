@@ -2,9 +2,12 @@ package com.da39a.voluntariossv;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +19,7 @@ import android.widget.Spinner;
 import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.firelisteners.Checklogin;
 import com.da39a.voluntariossv.utils.CustomAlerts;
+import com.da39a.voluntariossv.utils.Permisos;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -62,7 +66,6 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
         iRubro.setAdapter(adapter);
         iRubro.setSelection(0);
         alerts =  new CustomAlerts(this);
-
     }
 
     public void  Checklogin(View v){
@@ -161,7 +164,15 @@ public class RegistroInstitucion extends AppCompatActivity implements OnFailureL
 
     //Inicio metodos para cargar el mapa y obtener su posicion
     public  void map(View v) {
-        startActivityForResult(new Intent(this, com.da39a.voluntariossv.PlacePicker.class),0);
+        boolean finelocation = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean coarselocation = ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+        if(finelocation && coarselocation){
+            startActivityForResult(new Intent(this, com.da39a.voluntariossv.PlacePicker.class),0);
+        }else{
+            new Permisos(this).CheckPermisos();
+        }
+
     }
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

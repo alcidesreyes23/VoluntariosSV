@@ -20,7 +20,10 @@ import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.modelos.Voluntario;
 import com.da39a.voluntariossv.ui.configuraciones.ConfiguracionesFragment;
 import com.da39a.voluntariossv.utils.Calculos;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,6 +62,7 @@ public class Rcv_Aplicantes extends RecyclerView.Adapter<Rcv_Aplicantes.VHolder>
     public class VHolder extends RecyclerView.ViewHolder{
         Button btnLlamar,btnAceptar;
         CircleImageView civ;
+        StorageReference stg;
         TextView tvNombre,tvOcupacion,tvEdadSexo;
 
         public VHolder(@NonNull View itemView) {
@@ -69,6 +73,8 @@ public class Rcv_Aplicantes extends RecyclerView.Adapter<Rcv_Aplicantes.VHolder>
             btnAceptar = itemView.findViewById(R.id.btn_aceptar);
             tvEdadSexo = itemView.findViewById(R.id.vol_edadsexo);
             tvOcupacion = itemView.findViewById(R.id.vol_ocupacion);
+
+            stg = FirebaseStorage.getInstance().getReference().child("Fotos_perfil");
         }
 
         public void setUI(Voluntario v){
@@ -77,7 +83,15 @@ public class Rcv_Aplicantes extends RecyclerView.Adapter<Rcv_Aplicantes.VHolder>
             tvEdadSexo.setText(v.getSexo() + " - " + Calculos.getEdadByMilisdate(v.getNacimiento()) + " años");
             btnLlamar.setOnClickListener(new PhoneIntent(v.getTelefono()));
             btnAceptar.setOnClickListener(new Notificar(v.getId()));
-            Glide.with(ctx).load(v.getFotoPerfil()).dontAnimate().fitCenter().centerCrop().into(civ);
+
+            stg = stg.child(v.getFotoPerfil());
+            stg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(ctx).load(uri).error(R.drawable.perfil_defecto).into(civ);
+                }
+            });
+
         }
 
         private class PhoneIntent implements View.OnClickListener{

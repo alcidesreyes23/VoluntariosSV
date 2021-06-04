@@ -22,11 +22,7 @@ public class Voluntario {
         this.setOcupacion(ds.child("ocupacion").getValue().toString());
         this.setSexo(ds.child("sexo").getValue().toString());
         this.setTelefono(ds.child("telefono").getValue().toString());
-        if(ds.child("fotoPerfil").exists()){
-            this.setFotoPerfil(ds.child("fotoPerfil").getValue().toString());
-        }else{
-            this.setFotoPerfil("");
-        }
+        this.setFotoPerfil(ds.getKey()+".jpg");
     }
 
     public String getId() {

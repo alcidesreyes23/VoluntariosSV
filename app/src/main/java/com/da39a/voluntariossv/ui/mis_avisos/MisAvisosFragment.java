@@ -76,6 +76,12 @@ public class MisAvisosFragment extends Fragment implements ValueEventListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ref.addListenerForSingleValueEvent(this);
+    }
+
+    @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
         avisos.clear();
         for (DataSnapshot d : snapshot.getChildren()){

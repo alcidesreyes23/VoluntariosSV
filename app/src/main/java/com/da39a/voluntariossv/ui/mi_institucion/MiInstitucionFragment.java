@@ -26,6 +26,7 @@ import com.da39a.voluntariossv.utils.Constantes;
 import com.da39a.voluntariossv.utils.Conversiones;
 import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.da39a.voluntariossv.utils.Localbase;
+import com.da39a.voluntariossv.utils.Permisos;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +43,7 @@ public class MiInstitucionFragment extends Fragment {
     public final int ACTIVITY_GALLERY = 100;
     public final int ACTIVITY_MAP = 200;
 
+    StorageReference stgImg;
     EditText et_nombre,et_descripcion,et_telefono,et_ubicacion;
     ImageView institucion_img,btn_gallery,btn_map;
     Institucion miInstitucion;
@@ -98,6 +100,15 @@ public class MiInstitucionFragment extends Fragment {
             }
         }
 
+        stgImg = FirebaseStorage.getInstance().getReference().child("Instituciones").child(miInstitucion.getId()+".jpg");
+        stgImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(MiInstitucionFragment.this.getContext()).load(uri).error(R.drawable.img_landscape).into(institucion_img);
+            }
+        });
+
+        new Permisos(this.getActivity()).CheckPermisos();
     }
 
     public class OpenGallery implements View.OnClickListener{

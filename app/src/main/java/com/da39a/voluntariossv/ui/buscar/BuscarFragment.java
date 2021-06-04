@@ -66,7 +66,8 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         View root = inflater.inflate(R.layout.fragment_buscar, container, false);
 
         init(root);
-        load(savedInstanceState);
+        if(savedInstanceState != null) mapbundle = savedInstanceState.getBundle(MAP_BUNDLE_KEY);
+        solicitarPermisos();
         return root;
     }
 
@@ -80,23 +81,40 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         seekradio = v.findViewById(R.id.seekradio);
         seekindicator = v.findViewById(R.id.seekindicator);
         adapter = new Rcv_Busqueda(this.getContext(),avisos);
+
+        mapa.onCreate(mapbundle);
     }
 
-    public void load(Bundle savedInstanceState){
+    @SuppressLint("MissingPermission")
+    private void solicitarPermisos(){
+        boolean finelocation = ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean coarselocation = ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-        solicitarPermisos();
-
-        if(savedInstanceState != null){
-            mapbundle = savedInstanceState.getBundle(MAP_BUNDLE_KEY);
+        if(finelocation && coarselocation){
+            load();
+        }else{
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},1);
         }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 1){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if(grantResults.length > 1 && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                    load();
+                }
+            }
+        }
+    }
+
+    public void load(){
         rcv.setHasFixedSize(true);
         rcv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         rcv.setAdapter(adapter);
 
         seekradio.setOnSeekBarChangeListener(new SeekRadioChange());
-
-        mapa.onCreate(mapbundle);
         mapa.getMapAsync(this);
     }
 
@@ -122,15 +140,9 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         googlemap.setMinZoomPreference(15);
         LatLng position = new LatLng(13.670048,-89.293314);
         googlemap.moveCamera(CameraUpdateFactory.newLatLng(position));
-        //mapa.onResume();
     }
 
-    @SuppressLint("MissingPermission")
-    private void solicitarPermisos(){
-        if(ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},1);
-        }
-    }
+
 
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -221,7 +233,7 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         mapa.onResume();
     }
 
-    @Override
+   @Override
     public void onStart() {
         super.onStart();
         mapa.onStart();

@@ -35,10 +35,12 @@ import com.da39a.voluntariossv.DatePickerFragment;
 import com.da39a.voluntariossv.Login;
 import com.da39a.voluntariossv.R;
 import com.da39a.voluntariossv.firebase.Realtimedb;
+import com.da39a.voluntariossv.modelos.Voluntario;
 import com.da39a.voluntariossv.utils.Calculos;
 import com.da39a.voluntariossv.utils.Constantes;
 import com.da39a.voluntariossv.utils.Conversiones;
 import com.da39a.voluntariossv.utils.CustomAlerts;
+import com.da39a.voluntariossv.utils.Permisos;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +51,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -95,37 +98,8 @@ public class ConfiguracionesFragment extends Fragment {
         return root;
     }
 
-    //region PERDIR Y OBTENER PERMISOS DE ACCESO A LA CAMARA
-    public boolean checkPermissionREAD_EXTERNAL_STORAGE(final Context context) {
-        int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(context,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    showDialog("External storage", context, Manifest.permission.READ_EXTERNAL_STORAGE);
-                } else {
-                    ActivityCompat.requestPermissions(   (Activity) context, new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                }
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return true;
-        }
-    }
 
-    public void showDialog(final String msg, final Context context, final String permission) {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-        alertBuilder.setCancelable(true);
-        alertBuilder.setTitle("Permission necessary");
-        alertBuilder.setMessage(msg + " permission is necessary");
-        alertBuilder.setPositiveButton(android.R.string.yes,(dialog, which) -> ActivityCompat.requestPermissions((Activity) context,new String[] { permission },MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE));
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
-    }
-
-
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {}
@@ -133,7 +107,7 @@ public class ConfiguracionesFragment extends Fragment {
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
+    }*/
     //endregion
 
     //region METODO INIT
@@ -157,60 +131,26 @@ public class ConfiguracionesFragment extends Fragment {
         edtFecha.setOnClickListener(view -> showDatePickerDialog());
         btnActualizar.setOnClickListener(view -> Actualizar());
         perfil.setOnClickListener(v1 -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("Escoga el metodo para obtener la foto de perfil.");
-            String[] items = {"Galeria","Camara"};
-            dialog.setItems(items, (dialog12, which) -> {
-                switch (which){
-                    case 0:
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, GALLERY_INTENT);
-                        break;
-                    case 1:
-                        if (checkPermissionREAD_EXTERNAL_STORAGE(ctx)) abrirCamera();
-                        break;
-                }
-            });
-            AlertDialog dialog1 = dialog.create();
-            dialog1.show();
+
+            if(CheckPermisos()){
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALLERY_INTENT);
+            }else{
+                new Permisos(ConfiguracionesFragment.this.getActivity()).CheckPermisos();
+            }
+
         });
         //Cargar datos de perfil
         LoadUser();
     }
     //endregion
 
-    //region METODOS PARA OBTNER IMAGEN DESDE GALERIA O TOMAR FOTO
-    //Metodo para abrir camara
-    private void abrirCamera(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ignored) { }
-            if (photoFile != null) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, "MyPicture");
-                values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis());
-                photoUri = requireActivity().getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(takePictureIntent, COD_FOTO);
-            }
-        }
+    public boolean CheckPermisos(){
+        return ActivityCompat.checkSelfPermission(this.getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
-    //Crea la imagen
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile( imageFileName,".jpg",  storageDir );
 
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
     //Para obtener la url de la imagen desde la galeria
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -221,60 +161,12 @@ public class ConfiguracionesFragment extends Fragment {
                     assert data != null;
                     uriPerfil = data.getData();
                     estado = true;
-                    perfil.setImageURI(uriPerfil);
+                    Glide.with(ConfiguracionesFragment.this.getContext()).load(uriPerfil).into(perfil);
                 }
-                break;
-            case COD_FOTO:
-                if (resultCode == Activity.RESULT_OK && data != null ){
-                    Bitmap bitmap;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), photoUri);
-                        perfil.setImageBitmap(bitmap);
-                        uriPerfil =  photoUri;
-                        estado = true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
+            break;
         }
     }
 
-    //Interface para obtener el url desde el Storage
-    public  interface IDevolverURL{
-        void urlFoto(String url);
-    }
-    //endregion
-
-    //region METODOS PARA SUBIR LA IMAGEN
-    //Subir Foto al storage
-    public void  SubirFoto(Uri uri, IDevolverURL iDevolverURL){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        //Crea una carpeta de fotos de perfil para cada usuario
-        StorageReference dbR = storage.getReference("Fotos_perfil/"+ Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-        //Agregar un nombre a la foto
-        String nombreFoto;
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("SSS.ss-mm-hh-dd-MM-yyyy", Locale.getDefault());
-        nombreFoto = simpleDateFormat.format(date);
-        //Crea el hijo de la foto
-        final StorageReference fotoReferencia = dbR.child(nombreFoto);
-        //Guarda la foto
-        fotoReferencia.putFile(uri).continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                throw Objects.requireNonNull(task.getException());
-            }
-            // continuar con el task para obtener la url de descarga
-            return fotoReferencia.getDownloadUrl();
-        }).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Uri downloadUri = task.getResult();
-                String downloadURL = downloadUri.toString();
-                iDevolverURL.urlFoto(downloadURL);
-            }
-        });
-    }
-    //endregion
 
     //region  ACTUALIZAR LOS DATOS DE PERFIL
     //Metodo que acutaliza
@@ -296,20 +188,22 @@ public class ConfiguracionesFragment extends Fragment {
 
         //Valida que se haya seleccionado una foto
         if (estado) {
-            //Si se ha selecionado la sube y guarda los datos
-            SubirFoto(uriPerfil, url -> {
-                datos.put("fotoPerfil", url);
-                EnviarDatos(datos);
-            });
-            estado = false;
-        } else {
-            //Sino se ha seleccionado y no tiene foto de antes coloca la de por defecto
-            if (uriPerfil.toString().equals(Constantes.FOTO_POR_DEFECTO_F) || uriPerfil.toString().equals(Constantes.FOTO_POR_DEFECTO_M) ) {
-                if (genero.equals("Masculino"))  datos.put("fotoPerfil", Constantes.FOTO_POR_DEFECTO_M);
-                else  datos.put("fotoPerfil", Constantes.FOTO_POR_DEFECTO_F);
-            }
-            else  datos.put("fotoPerfil", uriPerfil.toString());
+            String uid = FirebaseAuth.getInstance().getUid();
+            StorageReference stg = FirebaseStorage.getInstance().getReference().child("Fotos_perfil").child(uid + ".jpg");
+            stg.putFile(uriPerfil).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    EnviarDatos(datos);
+                    estado = false;
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
+                }
+            });
+
+        } else {
             EnviarDatos(datos);
         }
     }
@@ -348,36 +242,37 @@ public class ConfiguracionesFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (isAdded()) {
                     if (snapshot.exists()) {
-                        //Validacion por s no existe foto
-                        if (snapshot.child("fotoPerfil").exists()) {
-                            String url = Objects.requireNonNull(snapshot.child("fotoPerfil").getValue()).toString();
-                            //Guarda el url de la foto ya guardada
-                            uriPerfil = Uri.parse(Objects.requireNonNull(snapshot.child("fotoPerfil").getValue()).toString());
-                            Glide.with(ConfiguracionesFragment.this).load(url).dontAnimate().fitCenter().centerCrop().into(perfil);
-                        }
-                        long datoF = Long.parseLong(Objects.requireNonNull(snapshot.child("nacimiento").getValue()).toString());
+                        Voluntario vol = new Voluntario(snapshot);
+
+                        long datoF = vol.getNacimiento();
                         String date = Conversiones.milisToDateString(datoF);
                         String[] fecha = date.split(" ");
                         fechaLong = datoF;
-                        edtNombre.setText(Objects.requireNonNull(snapshot.child("nombre").getValue()).toString());
+                        edtNombre.setText(vol.getNombre());
                         edtFecha.setText(fecha[0]);
-                        edtOcupacion.setText(Objects.requireNonNull(snapshot.child("ocupacion").getValue()).toString());
-                        if (snapshot.child("sexo").exists()) {
-                            if (snapshot.child("sexo").getValue().toString().equals("Masculino"))
-                                rM.setChecked(true);
-                            else
-                                rF.setChecked(true);
-                        }
-                        //Validacion por si no existe foto
-                        if (snapshot.child("telefono").exists()) {
-                            edtTelefono.setText(snapshot.child("telefono").getValue().toString());
-                        }
+                        edtOcupacion.setText(vol.getOcupacion());
+
+                        if (vol.getSexo().equals("Masculino"))
+                            rM.setChecked(true);
+                        else
+                            rF.setChecked(true);
+
+                        edtTelefono.setText(vol.getTelefono());
                     }
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
+
+        StorageReference stg = FirebaseStorage.getInstance().getReference().child("Fotos_perfil").child(uid+".jpg");
+        stg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(ConfiguracionesFragment.this.getContext()).load(uri).error(R.drawable.perfil_defecto).into(perfil);
+            }
+        });
+
     }
 
     // endregion
