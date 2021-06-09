@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -76,13 +77,9 @@ public class ConfiguracionesFragment extends Fragment {
     long fechaLong;
     ImageView perfil;
     static  final int  GALLERY_INTENT = 1;
-    static  final int  COD_FOTO = 2;
-    static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
-    Uri uriPerfil, photoUri;
+    Uri uriPerfil;
     boolean estado;
     String genero;
-    String mCurrentPhotoPath;
-    //endregion
 
     @Nullable
     @Override
@@ -90,25 +87,11 @@ public class ConfiguracionesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_configuraciones, container, false);
         ctx = (this.getContext());
         init(root);
-        btn_signout = root.findViewById(R.id.btn_signout);
-        btn_signout.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            ConfiguracionesFragment.this.startActivity(new Intent(ctx, Login.class));
-        });
+
+
         return root;
     }
 
-
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {}
-            else Toast.makeText(ctx, "GET_ACCOUNTS Denied", Toast.LENGTH_SHORT).show();
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }*/
-    //endregion
 
     //region METODO INIT
     public  void  init(View v){
@@ -141,6 +124,8 @@ public class ConfiguracionesFragment extends Fragment {
             }
 
         });
+
+
         //Cargar datos de perfil
         LoadUser();
     }

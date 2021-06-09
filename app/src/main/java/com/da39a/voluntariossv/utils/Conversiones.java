@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.da39a.voluntariossv.R;
+
 import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -67,5 +69,32 @@ public class Conversiones {
     }
 
 
+    public static int getRubroImg(String rubro){
+        switch (rubro){
+            case "Educación":
+                return R.drawable.img_educacion;
+            case "Turismo":
+                return R.drawable.img_turismo;
+            case "Software":
+                return R.drawable.img_software;
+            case "Salud":
+                return R.drawable.img_salud;
+            case "Ganadería":
+                return R.drawable.img_ganaderia;
+            case "Pesca":
+                return R.drawable.img_pesca;
+            case "Construcción":
+                return R.drawable.img_construccion;
+            case "Telecomunicaciones":
+                return R.drawable.img_telecomunicaciones;
+            case "Editorial":
+                return R.drawable.img_editorial;
+            case "Mercadotecnia":
+                return R.drawable.img_mercadotecnia;
+            case "Otra":
+                return R.drawable.img_landscape;
+        }
+        return 0;
+    }
 
 }

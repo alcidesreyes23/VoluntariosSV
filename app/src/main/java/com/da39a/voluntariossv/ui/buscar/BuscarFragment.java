@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +29,7 @@ import com.da39a.voluntariossv.modelos.Aviso;
 import com.da39a.voluntariossv.modelos.Institucion;
 import com.da39a.voluntariossv.utils.Calculos;
 import com.da39a.voluntariossv.utils.Conversiones;
+import com.da39a.voluntariossv.xml.CustomMapView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,7 +51,7 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
 
     private static final String MAP_BUNDLE_KEY = "MAIN_MAP_VIEW";
 
-    MapView mapa;
+    CustomMapView mapa;
     Bundle mapbundle;
     RecyclerView rcv;
     List<Aviso> avisos,temp;
@@ -59,6 +62,7 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
     SeekBar seekradio;
     TextView seekindicator;
     int radiomts = 1000;
+    NestedScrollView nestedscrollview;
 
     @Nullable
     @Override
@@ -80,6 +84,7 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
         rcv = v.findViewById(R.id.rcv_resultados);
         seekradio = v.findViewById(R.id.seekradio);
         seekindicator = v.findViewById(R.id.seekindicator);
+        nestedscrollview = v.findViewById(R.id.nestedscrollview);
         adapter = new Rcv_Busqueda(this.getContext(),avisos);
 
         mapa.onCreate(mapbundle);
@@ -116,6 +121,8 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
 
         seekradio.setOnSeekBarChangeListener(new SeekRadioChange());
         mapa.getMapAsync(this);
+
+
     }
 
 
@@ -149,6 +156,7 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
 
         if(currentLocation != null){
             avisos.clear();
+            googlemap.clear();
             for (DataSnapshot d : snapshot.getChildren()){
                 Aviso aviso = new Aviso(d);
                 Institucion institucion = aviso.getInstitucion();

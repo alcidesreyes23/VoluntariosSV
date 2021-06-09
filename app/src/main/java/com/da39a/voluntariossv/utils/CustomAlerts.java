@@ -23,11 +23,15 @@ public class CustomAlerts{
     private String uid;
     private  boolean estado;
     private DialogInterface.OnClickListener positive;
+    private DialogInterface.OnClickListener negative;
+    private String negativetxt;
     Context ctx;
 
     public CustomAlerts(Context c){
         this.ctx = c;
         positive = null;
+        negative = null;
+        negativetxt = "";
     }
 
     public void setTitle(String title) {
@@ -48,6 +52,11 @@ public class CustomAlerts{
 
     public void setPositive(DialogInterface.OnClickListener action){
         this.positive = action;
+    }
+
+    public void setNegative(String txt, DialogInterface.OnClickListener negative){
+        this.negative = negative;
+        this.negativetxt = (txt.isEmpty()) ? "Cancelar" : txt;
     }
 
     public void show(){
@@ -103,6 +112,11 @@ public class CustomAlerts{
         } else {
             builder.setPositiveButton("Ok",positive);
         }
+
+        if(!negativetxt.isEmpty()){
+            builder.setNegativeButton(negativetxt,negative);
+        }
+
         builder.setView(v);
         builder.setCancelable(true);
         builder.create().show();

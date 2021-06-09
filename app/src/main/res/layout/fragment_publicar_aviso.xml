@@ -78,7 +78,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Minima: "
+                android:text="Minima: 15"
                 />
 
             <SeekBar
@@ -100,7 +100,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Maxima: "
+                android:text="Maxima: 15"
                 />
 
             <SeekBar

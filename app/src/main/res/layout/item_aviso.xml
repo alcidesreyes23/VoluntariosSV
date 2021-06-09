@@ -22,13 +22,25 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="72dp">
-
-                <ImageView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/img_landscape"
-                    android:scaleType="centerCrop"
-                    />
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/bgaviso"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/img_telecomunicaciones"
+                        android:scaleType="centerCrop"
+                        />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#000"
+                        android:alpha="0.15"
+                        />
+                </RelativeLayout>
+
+
 
                 <TextView
                     android:id="@+id/institucion"

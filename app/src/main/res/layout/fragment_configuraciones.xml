@@ -144,7 +144,7 @@
             android:backgroundTint="@color/color_success"
             android:layout_marginTop="16dp"/>
 
-        <Button
+        <!--<Button
             android:id="@+id/btn_signout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
             android:text="Cerrar Sesion"
             android:backgroundTint="#555"
             android:textColor="@color/white"
-            />
+            />-->
 
     </LinearLayout>
 

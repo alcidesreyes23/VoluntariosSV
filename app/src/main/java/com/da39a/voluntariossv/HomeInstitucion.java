@@ -1,5 +1,6 @@
 package com.da39a.voluntariossv;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.widget.TextView;
 
 import com.da39a.voluntariossv.modelos.Institucion;
+import com.da39a.voluntariossv.utils.CustomAlerts;
 import com.da39a.voluntariossv.utils.Localbase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -71,8 +73,19 @@ public class HomeInstitucion extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.action_settings){
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this,Login.class));
+            CustomAlerts ca = new CustomAlerts(this);
+            ca.setType(CustomAlerts.MODALTYPE.QUESTION);
+            ca.setTitle("Desea cerrar la sesión?");
+            ca.setMensage("Se cerrara la sesion de usuario");
+            ca.setNegative("Cancelar",null);
+            ca.setPositive(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(HomeInstitucion.this,Login.class));
+                }
+            });
+            ca.show();
         }
         return super.onOptionsItemSelected(item);
     }

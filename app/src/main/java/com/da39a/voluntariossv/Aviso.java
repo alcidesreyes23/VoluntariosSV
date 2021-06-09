@@ -52,6 +52,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -142,6 +143,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         refFavoritos.addListenerForSingleValueEvent(this);
         btn_solicitar.setOnClickListener(this);
         fab.setOnClickListener(this);
+
         activeLocation();
     }
 
@@ -159,6 +161,12 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         }else{
             aplicantes_content.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        this.finish();
+        return true;
     }
 
     public void activeLocation() {
