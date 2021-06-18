@@ -22,4 +22,13 @@ public class Calculos {
         return currentyear - birthyear;
     }
 
+    public static boolean isExpired(long expdate){
+        GregorianCalendar expcalendar = new GregorianCalendar();
+        GregorianCalendar nowcalendar = new GregorianCalendar();
+
+        expcalendar.setTimeInMillis(expdate);
+        return nowcalendar.getTimeInMillis() >= expcalendar.getTimeInMillis();
+    }
+
+
 }

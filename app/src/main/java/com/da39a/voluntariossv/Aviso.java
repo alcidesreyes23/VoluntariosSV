@@ -69,7 +69,7 @@ import java.util.Map;
 public class Aviso extends AppCompatActivity implements ValueEventListener, View.OnClickListener {
 
     Bundle bundle;
-    String avisoId;
+    String avisoId, uid;
     ImageView headerimg;
     CustomAlerts alerts;
     Button btn_solicitar;
@@ -107,7 +107,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
     public void init() {
         fab = findViewById(R.id.fab);
         collapsingToolbar.setTitle(" ");
-
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         headerimg = findViewById(R.id.headerimg);
         btn_solicitar = findViewById(R.id.btn_aplicar);
@@ -134,6 +134,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         alerts = new CustomAlerts(this);
         refAviso = new Realtimedb().getAviso(avisoId);
         refVoluntarios = new Realtimedb().getVoluntarios();
+
         stgreference = FirebaseStorage.getInstance().getReference().child("Instituciones");
         refFavoritos = new Realtimedb().getFavoritosUsuario(FirebaseAuth.getInstance().getUid());
     }
@@ -141,6 +142,8 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
     public void load() {
         refAviso.addListenerForSingleValueEvent(this);
         refFavoritos.addListenerForSingleValueEvent(this);
+
+        btnSolicitarChangeState(false);
         btn_solicitar.setOnClickListener(this);
         fab.setOnClickListener(this);
 
@@ -184,7 +187,7 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_aplicar){
-            aplicarVacante();
+            aplicarVacante(v);
         }else{
             if(isInstitucion){
                 CustomAlerts ca = new CustomAlerts(this);
@@ -205,17 +208,25 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         }
     }
 
-    public void aplicarVacante(){
-        Map<String,Object> data = new HashMap<>();
-        data.put(FirebaseAuth.getInstance().getCurrentUser().getUid(),true);
+    public void aplicarVacante(View v){
 
-        CustomAlerts ca = new CustomAlerts(this);
+        final boolean state = v.getTag().toString().equals("false");
+        Map<String,Object> data = new HashMap<>();
+        CustomAlerts ca= new CustomAlerts(this);
+
+        if(state){
+            data.put(uid,true);
+            btnSolicitarChangeState(true);
+        }else{
+            data.put(uid,null);
+            btnSolicitarChangeState(false);
+        }
 
         refAviso.child("aplicantes").setValue(data).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                ca.setTitle("Solicitud enviada!");
-                ca.setMensage("Has solicitado aplicar a esta solicitud de voluntarios exitosamente!");
+                ca.setTitle(state ? "Solicitud enviada!" : "Solicitud cancelada");
+                ca.setMensage(state ? "Has solicitad aplicar a este voluntariado" : "Cancelaste tu solicitud de voluntariado");
                 ca.setType(CustomAlerts.MODALTYPE.SUCCESS);
                 ca.show();
             }
@@ -224,11 +235,12 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
             public void onFailure(@NonNull Exception e) {
                 ca.setTitle("Error!");
                 ca.setMensage("Ocurrio un problema inesperado");
-                ca.setType(CustomAlerts.MODALTYPE.WARNING);
+                ca.setType(CustomAlerts.MODALTYPE.DANGER);
                 ca.show();
             }
         });
     }
+
 
     private void fabChangeState(boolean state){
         if(state){
@@ -237,6 +249,16 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
         }else{
             fab.setTag("false");
             fab.setColorFilter(Color.parseColor("#c2185c"));
+        }
+    }
+
+    private  void btnSolicitarChangeState(boolean state){
+        if(state){
+            btn_solicitar.setTag("true");
+            btn_solicitar.setText("Cancelar Solicitud");
+        }else{
+            btn_solicitar.setTag("false");
+            btn_solicitar.setText("Solicitar Vacante");
         }
     }
 
@@ -264,11 +286,16 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
             stgreference = stgreference.child(aviso.getInstitucion().getId() + ".jpg");
             stgreference.getDownloadUrl().addOnSuccessListener(new DowloadImg());
 
-
-            if(isInstitucion){
-                aplicantes = aviso.getAplicantes();
-                refVoluntarios.addListenerForSingleValueEvent(new LoadAplicantes());
+            aplicantes = aviso.getAplicantes();
+            for(String u : aplicantes){
+                Log.e("UID",u + " == " + uid);
+                if(u.equals(uid)) {
+                    btnSolicitarChangeState(true);
+                    break;
+                }
             }
+
+            if(isInstitucion) refVoluntarios.addListenerForSingleValueEvent(new LoadAplicantes());
 
         }else if(parent.equalsIgnoreCase("favoritos")){
             fabChangeState(snapshot.child(avisoId).exists());
@@ -320,6 +347,8 @@ public class Aviso extends AppCompatActivity implements ValueEventListener, View
             }
         }
     }
+
+
 
     private class SaveFavorite implements ValueEventListener{
         @Override

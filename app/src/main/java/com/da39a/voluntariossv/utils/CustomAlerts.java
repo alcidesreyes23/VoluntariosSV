@@ -91,7 +91,7 @@ public class CustomAlerts{
                 modal_title.setText("Informacion!");
                 break;
             case QUESTION:
-                modal_header.setBackgroundColor(ctx.getResources().getColor(R.color.color_question));
+                modal_header.setBackgroundColor(ctx.getResources().getColor(R.color.color_accent));
                 modal_icon.setImageDrawable(ctx.getResources().getDrawable(R.drawable.ic_question));
                 modal_title.setText("Pregunta?");
                 break;

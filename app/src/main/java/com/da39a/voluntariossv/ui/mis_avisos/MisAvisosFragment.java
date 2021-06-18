@@ -1,23 +1,16 @@
 package com.da39a.voluntariossv.ui.mis_avisos;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.da39a.voluntariossv.PlacePicker;
 import com.da39a.voluntariossv.R;
 import com.da39a.voluntariossv.adapters.Rcv_Busqueda;
 import com.da39a.voluntariossv.firebase.Realtimedb;
@@ -44,7 +37,7 @@ public class MisAvisosFragment extends Fragment implements ValueEventListener {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_avisos, container, false);
+        root = inflater.inflate(R.layout.fragment_favoritos, container, false);
 
         init(); /* AND */ load();
         return root;

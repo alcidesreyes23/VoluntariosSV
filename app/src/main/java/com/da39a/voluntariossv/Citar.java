@@ -102,7 +102,7 @@ public class Citar extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     CustomAlerts ca = new CustomAlerts(Citar.this);
-                    ca.setType(CustomAlerts.MODALTYPE.WARNING);
+                    ca.setType(CustomAlerts.MODALTYPE.DANGER);
                     ca.setTitle("Error!");
                     ca.setMensage("No se pudo programar la cita, intente de nuevo");
                     ca.show();

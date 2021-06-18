@@ -1,7 +1,6 @@
-package com.da39a.voluntariossv.ui.avisos;
+package com.da39a.voluntariossv.ui.favoritos;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +15,16 @@ import com.da39a.voluntariossv.R;
 import com.da39a.voluntariossv.adapters.Rcv_Busqueda;
 import com.da39a.voluntariossv.firebase.Realtimedb;
 import com.da39a.voluntariossv.modelos.Aviso;
-import com.da39a.voluntariossv.modelos.Institucion;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvisosFragment extends Fragment {
+public class FavoritosFragment extends Fragment {
 
     RecyclerView rcv;
     Rcv_Busqueda adapter;
@@ -39,7 +35,7 @@ public class AvisosFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_avisos, container, false);
+        View root = inflater.inflate(R.layout.fragment_favoritos, container, false);
         init(root);
         load();
         return root;

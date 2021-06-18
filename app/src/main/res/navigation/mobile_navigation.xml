@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_publicar_aviso"
-        android:name="com.da39a.voluntariossv.ui.avisos.AvisosFragment"
-        android:label="Avisos"
-        tools:layout="@layout/fragment_avisos" />
+        android:name="com.da39a.voluntariossv.ui.favoritos.FavoritosFragment"
+        android:label="Favoritos"
+        tools:layout="@layout/fragment_favoritos" />
 
     <fragment
         android:id="@+id/navigation_mi_institucion"

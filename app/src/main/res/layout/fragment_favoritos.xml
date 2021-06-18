@@ -15,7 +15,7 @@
             android:id="@+id/rcvTextHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Favoritos"
+            android:text="Avisos guardados"
             android:textSize="20sp"
             android:fontFamily="@font/roboto_black"
             android:layout_marginTop="16dp"

@@ -121,8 +121,6 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
 
         seekradio.setOnSeekBarChangeListener(new SeekRadioChange());
         mapa.getMapAsync(this);
-
-
     }
 
 
@@ -160,8 +158,12 @@ public class BuscarFragment extends Fragment implements OnMapReadyCallback, Goog
             for (DataSnapshot d : snapshot.getChildren()){
                 Aviso aviso = new Aviso(d);
                 Institucion institucion = aviso.getInstitucion();
+
+
                 double metros = Calculos.getDistancia(currentLocation,new LatLng(institucion.getLatitud(),institucion.getLongitud()));
-                if(metros <= radiomts){
+                boolean isExp = Calculos.isExpired(aviso.getExpiracion());
+
+                if(metros <= radiomts && !isExp){
                     aviso.setExtra(Conversiones.metrosToDistanciaLabel(metros));
                     addPin(institucion);
                     avisos.add(aviso);
